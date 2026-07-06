@@ -140,6 +140,14 @@ tbody td{padding:10px 14px;color:var(--text)}
 .jaw-label{text-align:center;font-size:.7rem;color:var(--muted);font-weight:600;margin:2px 0}
 .tooth{width:36px;height:46px;border-radius:8px 8px 12px 12px;border:2px solid #ccc;background:var(--tooth-healthy);display:flex;flex-direction:column;align-items:center;justify-content:flex-end;cursor:pointer;font-size:.62rem;font-weight:700;color:#555;padding-bottom:4px;transition:all .15s;position:relative}
 .tooth:hover{transform:translateY(-2px);box-shadow:0 4px 10px rgba(0,0,0,.15)}
+/* Tooth context menu */
+#toothMenu{position:fixed;background:#fff;border:1px solid var(--border);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.15);z-index:9000;min-width:200px;padding:6px 0;display:none}
+#toothMenu.open{display:block}
+#toothMenu .menu-header{padding:8px 14px 6px;font-size:.75rem;font-weight:700;color:var(--muted);text-transform:uppercase;letter-spacing:.06em;border-bottom:1px solid var(--border);margin-bottom:4px}
+#toothMenu .menu-item{display:flex;align-items:center;gap:10px;padding:9px 14px;font-size:.875rem;cursor:pointer;transition:background .1s}
+#toothMenu .menu-item:hover{background:var(--mint)}
+#toothMenu .menu-item .dot{width:12px;height:12px;border-radius:3px;flex-shrink:0}
+#toothMenu .menu-divider{border:none;border-top:1px solid var(--border);margin:4px 0}
 .tooth.done{background:var(--tooth-done);border-color:#66BB6A;color:#2E7D32}
 .tooth.planned{background:var(--tooth-planned);border-color:#FFA726;color:#E65100}
 .tooth.missing{background:var(--tooth-missing);border-color:#EF9A9A;color:#C62828}
@@ -404,6 +412,10 @@ hr{border:none;border-top:1px solid var(--border);margin:16px 0}
         <div class="item"><div class="dot" style="background:var(--tooth-done);border:2px solid #66BB6A"></div>Treatment Done</div>
         <div class="item"><div class="dot" style="background:var(--tooth-planned);border:2px solid #FFA726"></div>Treatment Planned</div>
         <div class="item"><div class="dot" style="background:var(--tooth-missing);border:2px solid #EF9A9A"></div>Missing / Extracted</div>
+      </div>
+      <div class="alert alert-info mt-3" style="font-size:.8rem;padding:8px 14px">
+        💡 <strong>Left click</strong> a tooth to add a full treatment record &nbsp;|&nbsp;
+        <strong>Right click</strong> a tooth to quickly mark it as Missing, Done, Planned or Healthy
       </div>
     </div>
     <div class="card">
@@ -1355,16 +1367,87 @@ function buildToothChart() {
 }
 
 function toothHTML(n) {
-  const tx = currentTxRecords.find(t => String(t.ToothFDI) === String(n));
-  let cls = 'tooth';
+  var tx = currentTxRecords.find(function(t) { return String(t.ToothFDI) === String(n); });
+  var cls = 'tooth';
+  var status = 'healthy';
   if (tx) {
-    if (tx.TxDone) cls += ' done';
-    else if (tx.TxPlanned) cls += ' planned';
-    if (tx.TxDone?.toLowerCase().includes('extract') || tx.TxDone?.toLowerCase().includes('missing')) cls += ' missing';
+    var done = (tx.TxDone || '').toLowerCase();
+    var planned = (tx.TxPlanned || '').toLowerCase();
+    if (done.includes('extract') || done.includes('missing')) {
+      cls += ' missing'; status = 'missing';
+    } else if (tx.TxDone) {
+      cls += ' done'; status = 'done';
+    } else if (tx.TxPlanned) {
+      cls += ' planned'; status = 'planned';
+    }
   }
-  return `<div class="${cls}" onclick="selectTooth(${n})" title="${n}">
-    <div class="tooth-crown"></div>${n}
-  </div>`;
+  return '<div class="' + cls + '" data-tooth="' + n + '" data-status="' + status + '"'
+    + ' onclick="selectTooth(' + n + ')"'
+    + ' oncontextmenu="showToothMenu(event,' + n + ');return false;"'
+    + ' title="Tooth ' + n + ' — left click: add record | right click: quick mark">'
+    + '<div class="tooth-crown"></div>' + n
+    + '</div>';
+}
+
+var _menuToothNum = null;
+
+function showToothMenu(e, n) {
+  e.preventDefault();
+  _menuToothNum = n;
+  var menu = document.getElementById('toothMenu');
+  document.getElementById('toothMenuTitle').textContent = 'Tooth ' + n;
+  // Position near cursor, keep within viewport
+  var x = e.clientX, y = e.clientY;
+  if (x + 210 > window.innerWidth)  x = window.innerWidth - 215;
+  if (y + 220 > window.innerHeight) y = window.innerHeight - 225;
+  menu.style.left = x + 'px';
+  menu.style.top  = y + 'px';
+  menu.classList.add('open');
+}
+
+// Close menu on any click outside
+document.addEventListener('click', function(e) {
+  if (!document.getElementById('toothMenu').contains(e.target)) {
+    document.getElementById('toothMenu').classList.remove('open');
+  }
+});
+
+async function quickMarkTooth(status) {
+  document.getElementById('toothMenu').classList.remove('open');
+  if (!_menuToothNum || !currentTxPatientId) return;
+  var n = _menuToothNum;
+  var today = new Date().toISOString().split('T')[0];
+
+  var txDone = '', txPlanned = '', diagnosis = '';
+  if (status === 'missing')  { txDone = 'Extraction / Missing'; diagnosis = 'Missing / Extracted tooth'; }
+  if (status === 'done')     { txDone = 'Treatment Completed';  diagnosis = 'Treatment done'; }
+  if (status === 'planned')  { txPlanned = 'Treatment Planned'; diagnosis = 'Treatment planned'; }
+  if (status === 'healthy')  {
+    // Remove existing record for this tooth if any
+    var existing = currentTxRecords.find(function(t) { return String(t.ToothFDI) === String(n); });
+    if (existing && existing.TxID) {
+      await apiPost({ action: 'deleteRow', sheet: 'Treatments', id: existing.TxID });
+    }
+    await loadPatientChart();
+    return;
+  }
+
+  var data = {
+    PatientID: currentTxPatientId,
+    Date: today,
+    ToothFDI: String(n),
+    Diagnosis: diagnosis,
+    TxDone: txDone,
+    TxPlanned: txPlanned,
+    Notes: 'Marked via quick chart'
+  };
+  await apiPost({ action: 'saveTreatment', data: data });
+  await loadPatientChart();
+}
+
+function openTxModalFromMenu() {
+  document.getElementById('toothMenu').classList.remove('open');
+  if (_menuToothNum) selectTooth(_menuToothNum);
 }
 
 function selectTooth(n) {
@@ -1981,5 +2064,30 @@ function statusClass(s) {
   return { Paid:'badge-green', Partial:'badge-amber', Pending:'badge-red', Scheduled:'badge-blue', Completed:'badge-green', Cancelled:'badge-grey' }[s]||'badge-grey';
 }
 </script>
+<!-- Tooth Context Menu -->
+<div id="toothMenu">
+  <div class="menu-header" id="toothMenuTitle">Tooth 00</div>
+  <div class="menu-item" onclick="quickMarkTooth('missing')">
+    <div class="dot" style="background:var(--tooth-missing);border:2px solid #EF9A9A"></div>
+    <span>Mark as Missing / Extracted</span>
+  </div>
+  <div class="menu-item" onclick="quickMarkTooth('done')">
+    <div class="dot" style="background:var(--tooth-done);border:2px solid #66BB6A"></div>
+    <span>Mark Treatment Done</span>
+  </div>
+  <div class="menu-item" onclick="quickMarkTooth('planned')">
+    <div class="dot" style="background:var(--tooth-planned);border:2px solid #FFA726"></div>
+    <span>Mark Treatment Planned</span>
+  </div>
+  <div class="menu-item" onclick="quickMarkTooth('healthy')">
+    <div class="dot" style="background:var(--tooth-healthy);border:2px solid #ccc"></div>
+    <span>Mark as Healthy / Clear</span>
+  </div>
+  <hr class="menu-divider"/>
+  <div class="menu-item" onclick="openTxModalFromMenu()">
+    <div class="dot" style="background:var(--navy)"></div>
+    <span>Add Full Treatment Record</span>
+  </div>
+</div>
 </body>
 </html>
