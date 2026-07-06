@@ -1174,12 +1174,19 @@ function filterAppointments() {
   if (status) filtered = filtered.filter(a => a.Status === status);
   if (type)   filtered = filtered.filter(a => a.Type === type);
 
-  // Sort
-  filtered = [...filtered].sort((a, b) => {
-    let va = a[apptSortKey] || '', vb = b[apptSortKey] || '';
-    if (apptSortKey === 'Date') { va = va + (a.Time||''); vb = vb + (b.Time||''); }
-    return apptSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
-  });
+  // Sort: upcoming (today & future, soonest first) on top, past (most recent first) below
+  const today = new Date().toISOString().split('T')[0];
+  if (apptSortKey === 'Date') {
+    // Default smart sort — not overridden by column click
+    const upcoming = filtered.filter(a => a.Date >= today).sort((a,b) => (a.Date+a.Time).localeCompare(b.Date+b.Time));
+    const past     = filtered.filter(a => a.Date <  today).sort((a,b) => (b.Date+b.Time).localeCompare(a.Date+a.Time));
+    filtered = [...upcoming, ...past];
+  } else {
+    filtered = [...filtered].sort((a, b) => {
+      let va = a[apptSortKey] || '', vb = b[apptSortKey] || '';
+      return apptSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+    });
+  }
 
   const countEl = document.getElementById('apptCount');
   if (countEl) countEl.textContent = filtered.length + ' appointment' + (filtered.length !== 1 ? 's' : '');
@@ -1201,88 +1208,94 @@ function clearApptFilters() {
   filterAppointments();
 }
 
-const WA_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+const WA_SVG = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>';
 
 function renderApptTable(list) {
-  const tb = document.getElementById('apptTbl');
+  var tb = document.getElementById('apptTbl');
   if (!list.length) {
     tb.innerHTML = '<tr><td colspan="7" class="text-center text-muted" style="padding:32px">No appointments found</td></tr>';
     return;
   }
-  const today = new Date().toISOString().split('T')[0];
-  tb.innerHTML = list.map(a => {
-    const isUpcoming = a.Date >= today && a.Status === 'Scheduled';
-    const isPast     = a.Date < today;
-    const rowStyle   = isUpcoming ? 'background:rgba(46,117,182,.04)' : '';
-    const patient    = patients.find(p => p.PatientID === a.PatientID);
-    const phone      = patient?.Phone || '';
-    return `<tr style="${rowStyle}" id="apptrow-${a.ApptID}">
-      <td>
-        <div style="font-weight:600;${isUpcoming?'color:var(--navy)':''}">${formatDate(a.Date)}</div>
-        ${isUpcoming ? '<div class="text-sm" style="color:var(--blue)">Upcoming</div>' : ''}
-        ${a.Date === today ? '<div class="text-sm" style="color:var(--teal);font-weight:600">Today</div>' : ''}
-      </td>
-      <td><strong>${a.Time}</strong></td>
-      <td>
-        <div style="font-weight:600">${a.PatientName}</div>
-        <div class="text-sm text-muted">${a.PatientID}</div>
-      </td>
-      <td>${a.Type}</td>
-      <td>${statusBadge(a.Status)}</td>
-      <td class="text-sm text-muted" style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${(a.Notes||'').replace(/"/g,"'")}">
-        ${a.Notes || '—'}
-      </td>
-      <td style="text-align:center;white-space:nowrap">
-        ${a.Status === 'Scheduled' ? `
-          <button class="btn btn-success btn-sm" style="padding:5px 8px" title="Mark Complete" onclick="quickUpdateStatus('${a.ApptID}','Completed')">✅</button>
-          <button class="btn btn-danger btn-sm" style="padding:5px 8px" title="Cancel" onclick="quickUpdateStatus('${a.ApptID}','Cancelled')">✕</button>
-          <button class="wa-btn" style="padding:5px 8px" title="WhatsApp: ${phone}" onclick="sendWhatsApp('${a.ApptID}')">${WA_SVG}</button>
-        ` : ''}
-        <button class="btn btn-secondary btn-sm" style="padding:5px 8px" title="View / Edit" onclick="showApptDetailModal('${a.ApptID}')">👁</button>
-      </td>
-    </tr>`;
-  }).join('');
+  var today = new Date().toISOString().split('T')[0];
+  var html = '';
+  list.forEach(function(a) {
+    var isUpcoming = a.Date >= today && a.Status === 'Scheduled';
+    var bg = isUpcoming ? 'background:rgba(46,117,182,.04)' : '';
+    var notes = (a.Notes || '').replace(/"/g, '&quot;');
+    var dateLabel = '';
+    if (a.Date === today && a.Status === 'Scheduled')
+      dateLabel = '<div class="text-sm" style="color:var(--teal);font-weight:600">Today</div>';
+    else if (a.Date > today && a.Status === 'Scheduled')
+      dateLabel = '<div class="text-sm" style="color:var(--blue)">Upcoming</div>';
+    var actions = '';
+    if (a.Status === 'Scheduled') {
+      actions += '<button class="btn btn-success btn-sm" style="padding:5px 8px" title="Mark Complete" data-action="complete" data-id="' + a.ApptID + '">&#x2705;</button>';
+      actions += '<button class="btn btn-danger btn-sm"  style="padding:5px 8px" title="Cancel"        data-action="cancel"   data-id="' + a.ApptID + '">&#x2715;</button>';
+      actions += '<button class="wa-btn"                 style="padding:5px 8px" title="WhatsApp"      data-action="wa"       data-id="' + a.ApptID + '">' + WA_SVG + '</button>';
+    }
+    actions += '<button class="btn btn-secondary btn-sm" style="padding:5px 8px" title="View" data-action="view" data-id="' + a.ApptID + '">&#x1F441;</button>';
+    html +=
+      '<tr style="' + bg + '">'
+      + '<td><div style="font-weight:600' + (isUpcoming ? ';color:var(--navy)' : '') + '">' + formatDate(a.Date) + '</div>' + dateLabel + '</td>'
+      + '<td><strong>' + a.Time + '</strong></td>'
+      + '<td><div style="font-weight:600">' + a.PatientName + '</div><div class="text-sm text-muted">' + a.PatientID + '</div></td>'
+      + '<td>' + a.Type + '</td>'
+      + '<td>' + statusBadge(a.Status) + '</td>'
+      + '<td class="text-sm text-muted" style="max-width:180px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="' + notes + '">' + (a.Notes || '&mdash;') + '</td>'
+      + '<td style="text-align:center;white-space:nowrap">' + actions + '</td>'
+      + '</tr>';
+  });
+  tb.innerHTML = html;
 }
 
-async function quickUpdateStatus(id, status) {
-  if (!confirm('Mark this appointment as ' + status + '?')) return;
-  await apiPost({ action: 'updateApptStatus', id, status });
-  await loadAppointments();
-  loadDashboard();
-}
+document.addEventListener('click', function(e) {
+  var btn = e.target.closest('[data-action]');
+  if (!btn) return;
+  var action = btn.getAttribute('data-action');
+  var id     = btn.getAttribute('data-id');
+  if (!id) return;
+  if      (action === 'complete') { quickUpdateStatus(id, 'Completed'); }
+  else if (action === 'cancel')   { quickUpdateStatus(id, 'Cancelled'); }
+  else if (action === 'wa')       { sendWhatsApp(id); }
+  else if (action === 'view')     { showApptDetailModal(id); }
+});
+
 
 function showApptDetailModal(id) {
-  const a = appointments.find(x => x.ApptID === id);
+  var a = appointments.find(function(x) { return x.ApptID === id; });
   if (!a) return;
-  const patient = patients.find(p => p.PatientID === a.PatientID);
-  const phone = patient?.Phone || '—';
-  // show in a small overlay — reuse patientViewModal
-  document.getElementById('patientViewContent').innerHTML = `
-    <div class="flex items-center justify-between mb-3">
-      <h3>📋 ${a.PatientName}</h3>
-      <span class="badge ${statusClass(a.Status)}">${a.Status}</span>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.875rem;margin-bottom:18px">
-      <div><span class="text-muted">Appt ID: </span><code>${a.ApptID}</code></div>
-      <div><span class="text-muted">Patient ID: </span>${a.PatientID}</div>
-      <div><span class="text-muted">Date: </span><strong>${formatDate(a.Date)}</strong></div>
-      <div><span class="text-muted">Time: </span><strong>${a.Time}</strong></div>
-      <div><span class="text-muted">Type: </span>${a.Type}</div>
-      <div><span class="text-muted">Phone: </span>${phone}</div>
-      <div style="grid-column:1/-1"><span class="text-muted">Notes: </span>${a.Notes||'—'}</div>
-    </div>
-    <div class="btn-group">
-      ${a.Status === 'Scheduled' ? `
-        <button class="btn btn-success btn-sm" onclick="quickUpdateStatus('${a.ApptID}','Completed');closeModal('patientViewModal')">✅ Mark Complete</button>
-        <button class="btn btn-danger btn-sm" onclick="quickUpdateStatus('${a.ApptID}','Cancelled');closeModal('patientViewModal')">✕ Cancel</button>
-        <button class="wa-btn-full" style="font-size:.8rem;padding:8px 14px" onclick="closeModal('patientViewModal');sendWhatsApp('${a.ApptID}')">
-          ${WA_SVG} WhatsApp Reminder
-        </button>` : ''}
-      <button class="btn btn-secondary btn-sm" onclick="closeModal('patientViewModal');nav('treatments');setTimeout(()=>{document.getElementById('txPatientSelect').value='${a.PatientID}';loadPatientChart()},400)">🦷 Tooth Chart</button>
-      <button class="btn btn-secondary btn-sm" onclick="closeModal('patientViewModal');nav('billing');setTimeout(openBillModal,400)">🧾 Bill</button>
-    </div>`;
+  var patient = patients.find(function(p) { return p.PatientID === a.PatientID; });
+  var phone = (patient && patient.Phone) ? patient.Phone : '&mdash;';
+  var scheduledBtns = '';
+  if (a.Status === 'Scheduled') {
+    scheduledBtns =
+      '<button class="btn btn-success btn-sm" data-action="complete" data-id="' + a.ApptID + '" onclick="closeModal(\'patientViewModal\')">&#x2705; Mark Complete</button>'
+    + '<button class="btn btn-danger btn-sm"  data-action="cancel"   data-id="' + a.ApptID + '" onclick="closeModal(\'patientViewModal\')">&#x2715; Cancel</button>'
+    + '<button class="wa-btn-full" data-action="wa" data-id="' + a.ApptID + '" style="font-size:.8rem;padding:8px 14px" onclick="closeModal(\'patientViewModal\')">' + WA_SVG + ' WhatsApp Reminder</button>';
+  }
+  var chartPID = a.PatientID;
+  document.getElementById('patientViewContent').innerHTML =
+    '<div class="flex items-center justify-between mb-3">'
+    + '<h3>&#x1F4CB; ' + a.PatientName + '</h3>'
+    + '<span class="badge ' + statusClass(a.Status) + '">' + a.Status + '</span>'
+    + '</div>'
+    + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.875rem;margin-bottom:18px">'
+    + '<div><span class="text-muted">Appt ID: </span><code>' + a.ApptID + '</code></div>'
+    + '<div><span class="text-muted">Patient ID: </span>' + a.PatientID + '</div>'
+    + '<div><span class="text-muted">Date: </span><strong>' + formatDate(a.Date) + '</strong></div>'
+    + '<div><span class="text-muted">Time: </span><strong>' + a.Time + '</strong></div>'
+    + '<div><span class="text-muted">Type: </span>' + a.Type + '</div>'
+    + '<div><span class="text-muted">Phone: </span>' + phone + '</div>'
+    + '<div style="grid-column:1/-1"><span class="text-muted">Notes: </span>' + (a.Notes || '&mdash;') + '</div>'
+    + '</div>'
+    + '<div class="btn-group">'
+    + scheduledBtns
+    + '<button class="btn btn-secondary btn-sm" onclick="closeModal(\'patientViewModal\');nav(\'treatments\');setTimeout(function(){document.getElementById(\'txPatientSelect\').value=\'' + a.PatientID + '\';loadPatientChart();},400)">&#x1F9B7; Tooth Chart</button>'
+    + '<button class="btn btn-secondary btn-sm" onclick="closeModal(\'patientViewModal\');nav(\'billing\');setTimeout(openBillModal,400)">&#x1F9FE; Bill</button>'
+    + '</div>';
   openModal('patientViewModal');
 }
+
 
 function openApptModal() {
   clearForm(['am_id','am_notes']);
@@ -1871,25 +1884,33 @@ function buildWaMessage(appt) {
 }
 
 function sendWhatsApp(apptId) {
-  const a = appointments.find(x => x.ApptID === apptId);
-  if (!a) { alert('Appointment not found. Please reload the page.'); return; }
-  const patient = patients.find(p => p.PatientID === a.PatientID);
-  const phone = (patient && patient.Phone) ? patient.Phone : '';
-  const message = buildWaMessage(a);
+  // appointments may have been reloaded — search current array
+  const a = appointments.find(x => String(x.ApptID) === String(apptId));
+  if (!a) {
+    alert('Appointment not found (ID: ' + apptId + '). Please refresh the page.');
+    return;
+  }
+  // patients array lookup
+  const patient = patients.find(p => String(p.PatientID) === String(a.PatientID));
+  const rawPhone = (patient && patient.Phone) ? String(patient.Phone) : '';
 
+  const message = buildWaMessage(a);
   document.getElementById('waMessagePreview').textContent = message;
 
   // Clean phone: strip non-digits, prepend 91 if 10 digits
-  let cleaned = phone.replace(/[^0-9]/g, '');
+  let cleaned = rawPhone.replace(/[^0-9]/g, '');
   if (cleaned.length === 10) cleaned = '91' + cleaned;
   document.getElementById('waPhone').value = cleaned;
 
-  // Update open link live when phone changes
-  function updateLink() {
+  function buildLink() {
     const ph = document.getElementById('waPhone').value.replace(/[^0-9]/g, '');
-    const url = 'https://wa.me/' + ph + '?text=' + encodeURIComponent(message);
-    document.getElementById('waOpenLink').href = url;
+    return 'https://wa.me/' + ph + '?text=' + encodeURIComponent(message);
   }
+
+  function updateLink() {
+    document.getElementById('waOpenLink').href = buildLink();
+  }
+
   document.getElementById('waPhone').oninput = updateLink;
   updateLink();
 
@@ -1897,45 +1918,38 @@ function sendWhatsApp(apptId) {
 }
 
 function openBulkWaModal() {
-  const today = new Date().toISOString().split('T')[0];
-  const scheduled = appointments.filter(a => a.Status === 'Scheduled' && a.Date >= today)
-    .sort((a,b) => (a.Date+a.Time).localeCompare(b.Date+b.Time));
-  const el = document.getElementById('bulkWaList');
+  var today = new Date().toISOString().split('T')[0];
+  var scheduled = appointments
+    .filter(function(a) { return a.Status === 'Scheduled' && a.Date >= today; })
+    .sort(function(a, b) { return (a.Date + a.Time).localeCompare(b.Date + b.Time); });
+  var el = document.getElementById('bulkWaList');
   if (!scheduled.length) {
-    el.innerHTML = '<div class="empty-state"><div class="icon">📅</div>No scheduled appointments for this date</div>';
+    el.innerHTML = '<div class="empty-state"><div class="icon">&#x1F4C5;</div>No upcoming scheduled appointments</div>';
   } else {
-    el.innerHTML = `
-      <div class="tbl-wrap">
-        <table>
-          <thead><tr><th>Date</th><th>Time</th><th>Patient</th><th>Type</th><th>Phone</th><th>Action</th></tr></thead>
-          <tbody>
-            ${scheduled.sort((a,b)=>a.Time.localeCompare(b.Time)).map(a => {
-              const patient = patients.find(p => p.PatientID === a.PatientID);
-              const phone = patient?.Phone || '—';
-              return `<tr>
-                <td>${formatDate(a.Date)}</td>
-                <td><strong>${a.Time}</strong></td>
-                <td>${a.PatientName}</td>
-                <td>${a.Type}</td>
-                <td>${phone}</td>
-                <td>
-                  <button class="wa-btn-full" style="font-size:.8rem;padding:7px 12px" onclick="sendWhatsApp('${a.ApptID}')">
-                    <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-                    Send
-                  </button>
-                </td>
-              </tr>`;
-            }).join('')}
-          </tbody>
-        </table>
-      </div>`;
+    var rows = '';
+    scheduled.forEach(function(a) {
+      var patient = patients.find(function(p) { return p.PatientID === a.PatientID; });
+      var phone = (patient && patient.Phone) ? patient.Phone : '&mdash;';
+      rows +=
+        '<tr>'
+        + '<td>' + formatDate(a.Date) + '</td>'
+        + '<td><strong>' + a.Time + '</strong></td>'
+        + '<td>' + a.PatientName + '</td>'
+        + '<td>' + a.Type + '</td>'
+        + '<td>' + phone + '</td>'
+        + '<td><button class="wa-btn-full" style="font-size:.8rem;padding:7px 12px" data-action="wa" data-id="' + a.ApptID + '">' + WA_SVG + ' Send</button></td>'
+        + '</tr>';
+    });
+    el.innerHTML =
+      '<div class="tbl-wrap"><table>'
+      + '<thead><tr><th>Date</th><th>Time</th><th>Patient</th><th>Type</th><th>Phone</th><th>Action</th></tr></thead>'
+      + '<tbody>' + rows + '</tbody>'
+      + '</table></div>';
   }
   openModal('bulkWaModal');
 }
 
-// ═══════════════════════════════════════════════════════
-//  MODAL HELPERS
-// ═══════════════════════════════════════════════════════
+
 function openModal(id) { document.getElementById(id).classList.add('open'); }
 function closeModal(id) { document.getElementById(id).classList.remove('open'); }
 document.querySelectorAll('.modal-backdrop').forEach(m => {
