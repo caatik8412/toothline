@@ -307,29 +307,73 @@ hr{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="flex items-center justify-between mb-3">
     <div>
       <div class="page-title">Appointments</div>
-      <div class="page-sub">Schedule & manage visits</div>
+      <div class="page-sub">All scheduled & past visits</div>
     </div>
-    <div style="display:flex;gap:10px">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
       <button class="wa-btn-full" onclick="openBulkWaModal()">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
         Bulk Remind
       </button>
       <button class="btn btn-primary" onclick="openApptModal()">➕ Book Appointment</button>
     </div>
   </div>
-  <div class="appt-grid">
-    <div>
-      <div class="card mb-3">
-        <div class="form-group">
-          <label>Select Date</label>
-          <input type="date" id="apptDateFilter" onchange="loadAppointments()" />
-        </div>
+
+  <!-- Filters -->
+  <div class="card mb-3">
+    <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end">
+      <div class="form-group" style="min-width:160px">
+        <label>Date</label>
+        <input type="date" id="apptDateFilter" oninput="filterAppointments()"/>
       </div>
-      <div id="apptList"><div class="spinner"></div></div>
+      <div class="form-group" style="min-width:180px">
+        <label>Patient</label>
+        <select id="apptPatientFilter" onchange="filterAppointments()">
+          <option value="">All Patients</option>
+        </select>
+      </div>
+      <div class="form-group" style="min-width:140px">
+        <label>Status</label>
+        <select id="apptStatusFilter" onchange="filterAppointments()">
+          <option value="">All Status</option>
+          <option>Scheduled</option>
+          <option>Completed</option>
+          <option>Cancelled</option>
+        </select>
+      </div>
+      <div class="form-group" style="min-width:140px">
+        <label>Type</label>
+        <select id="apptTypeFilter" onchange="filterAppointments()">
+          <option value="">All Types</option>
+          <option>Consultation</option><option>Follow-up</option><option>Extraction</option>
+          <option>Root Canal</option><option>Scaling</option><option>Crown</option>
+          <option>Orthodontic</option><option>Periodontics</option><option>Denture</option><option>Emergency</option>
+        </select>
+      </div>
+      <div style="align-self:flex-end">
+        <button class="btn btn-secondary btn-sm" onclick="clearApptFilters()">✕ Clear</button>
+      </div>
+      <div style="align-self:flex-end;margin-left:auto">
+        <span id="apptCount" class="text-sm text-muted"></span>
+      </div>
     </div>
-    <div class="card" id="apptDetail" style="height:fit-content">
-      <div class="empty-state"><div class="icon">📅</div><div>Select an appointment to view details</div></div>
-    </div>
+  </div>
+
+  <!-- All Appointments Table -->
+  <div class="tbl-wrap" id="apptTableWrap">
+    <table>
+      <thead>
+        <tr>
+          <th onclick="sortAppts('Date')" style="cursor:pointer">Date ↕</th>
+          <th onclick="sortAppts('Time')" style="cursor:pointer">Time ↕</th>
+          <th>Patient</th>
+          <th>Type</th>
+          <th>Status</th>
+          <th>Notes</th>
+          <th style="text-align:center">Actions</th>
+        </tr>
+      </thead>
+      <tbody id="apptTbl"><tr><td colspan="7"><div class="spinner"></div></td></tr></tbody>
+    </table>
   </div>
 </div>
 
@@ -780,7 +824,7 @@ hr{border:none;border-top:1px solid var(--border);margin:16px 0}
   <div class="modal modal-lg">
     <button class="modal-close" onclick="closeModal('bulkWaModal')">✕</button>
     <h3>📢 Bulk WhatsApp Reminders</h3>
-    <div class="alert alert-info mb-3">Showing all <strong>Scheduled</strong> appointments for the selected date. Click the WhatsApp button against each patient to send individually.</div>
+    <div class="alert alert-info mb-3">All <strong>upcoming scheduled</strong> appointments. Click 📱 to send each patient a reminder individually.</div>
     <div id="bulkWaList"></div>
   </div>
 </div>
@@ -829,7 +873,7 @@ async function initApp() {
   loadDashboard();
   // Set today's date on appointment filter
   const today = new Date().toISOString().split('T')[0];
-  document.getElementById('apptDateFilter').value = today;
+  // apptDateFilter left blank so all appointments load by default
   document.getElementById('rptFrom').value = today.slice(0,7) + '-01';
   document.getElementById('rptTo').value = today;
 }
@@ -1095,55 +1139,149 @@ async function viewPatient(id) {
 // ═══════════════════════════════════════════════════════
 //  APPOINTMENTS
 // ═══════════════════════════════════════════════════════
+// sort state
+let apptSortKey = 'Date', apptSortAsc = false;
+
 async function loadAppointments() {
-  const date = document.getElementById('apptDateFilter').value;
-  const res = await apiGet({ action: 'getAppointments', date });
+  // Load ALL appointments (no date filter on API call)
+  const res = await apiGet({ action: 'getAppointments' });
   appointments = res.data || [];
-  const el = document.getElementById('apptList');
-  if (!appointments.length) {
-    el.innerHTML = '<div class="card empty-state"><div class="icon">📅</div>No appointments for this date</div>';
-    return;
+  // populate patient filter dropdown
+  const pf = document.getElementById('apptPatientFilter');
+  if (pf) {
+    const seen = new Set();
+    let opts = '<option value="">All Patients</option>';
+    appointments.forEach(a => {
+      if (!seen.has(a.PatientID)) {
+        seen.add(a.PatientID);
+        opts += `<option value="${a.PatientID}">${a.PatientName}</option>`;
+      }
+    });
+    pf.innerHTML = opts;
   }
-  el.innerHTML = appointments.sort((a,b) => a.Time.localeCompare(b.Time)).map(a => `
-    <div class="time-slot ${a.Status.toLowerCase()}" onclick="showApptDetail('${a.ApptID}')">
-      <div>
-        <strong>${a.Time}</strong> — ${a.PatientName}
-        <div class="text-sm text-muted">${a.Type}</div>
-      </div>
-      <div style="display:flex;align-items:center;gap:6px;flex-shrink:0">
-        <span class="badge ${statusClass(a.Status)}">${a.Status}</span>
-        ${a.Status === 'Scheduled' ? `<button class="wa-btn" onclick="event.stopPropagation();sendWhatsApp('${a.ApptID}')" title="Send WhatsApp reminder">
-          <svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        </button>` : ''}
-      </div>
-    </div>`).join('');
+  filterAppointments();
 }
 
-function showApptDetail(id) {
+function filterAppointments() {
+  const date   = (document.getElementById('apptDateFilter')?.value  || '').trim();
+  const pid    = (document.getElementById('apptPatientFilter')?.value || '').trim();
+  const status = (document.getElementById('apptStatusFilter')?.value  || '').trim();
+  const type   = (document.getElementById('apptTypeFilter')?.value    || '').trim();
+
+  let filtered = appointments;
+  if (date)   filtered = filtered.filter(a => a.Date === date);
+  if (pid)    filtered = filtered.filter(a => a.PatientID === pid);
+  if (status) filtered = filtered.filter(a => a.Status === status);
+  if (type)   filtered = filtered.filter(a => a.Type === type);
+
+  // Sort
+  filtered = [...filtered].sort((a, b) => {
+    let va = a[apptSortKey] || '', vb = b[apptSortKey] || '';
+    if (apptSortKey === 'Date') { va = va + (a.Time||''); vb = vb + (b.Time||''); }
+    return apptSortAsc ? va.localeCompare(vb) : vb.localeCompare(va);
+  });
+
+  const countEl = document.getElementById('apptCount');
+  if (countEl) countEl.textContent = filtered.length + ' appointment' + (filtered.length !== 1 ? 's' : '');
+
+  renderApptTable(filtered);
+}
+
+function sortAppts(key) {
+  if (apptSortKey === key) apptSortAsc = !apptSortAsc;
+  else { apptSortKey = key; apptSortAsc = true; }
+  filterAppointments();
+}
+
+function clearApptFilters() {
+  ['apptDateFilter','apptStatusFilter','apptTypeFilter'].forEach(id => {
+    const el = document.getElementById(id); if (el) el.value = '';
+  });
+  const pf = document.getElementById('apptPatientFilter'); if (pf) pf.value = '';
+  filterAppointments();
+}
+
+const WA_SVG = `<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>`;
+
+function renderApptTable(list) {
+  const tb = document.getElementById('apptTbl');
+  if (!list.length) {
+    tb.innerHTML = '<tr><td colspan="7" class="text-center text-muted" style="padding:32px">No appointments found</td></tr>';
+    return;
+  }
+  const today = new Date().toISOString().split('T')[0];
+  tb.innerHTML = list.map(a => {
+    const isUpcoming = a.Date >= today && a.Status === 'Scheduled';
+    const isPast     = a.Date < today;
+    const rowStyle   = isUpcoming ? 'background:rgba(46,117,182,.04)' : '';
+    const patient    = patients.find(p => p.PatientID === a.PatientID);
+    const phone      = patient?.Phone || '';
+    return `<tr style="${rowStyle}" id="apptrow-${a.ApptID}">
+      <td>
+        <div style="font-weight:600;${isUpcoming?'color:var(--navy)':''}">${formatDate(a.Date)}</div>
+        ${isUpcoming ? '<div class="text-sm" style="color:var(--blue)">Upcoming</div>' : ''}
+        ${a.Date === today ? '<div class="text-sm" style="color:var(--teal);font-weight:600">Today</div>' : ''}
+      </td>
+      <td><strong>${a.Time}</strong></td>
+      <td>
+        <div style="font-weight:600">${a.PatientName}</div>
+        <div class="text-sm text-muted">${a.PatientID}</div>
+      </td>
+      <td>${a.Type}</td>
+      <td>${statusBadge(a.Status)}</td>
+      <td class="text-sm text-muted" style="max-width:180px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis" title="${(a.Notes||'').replace(/"/g,"'")}">
+        ${a.Notes || '—'}
+      </td>
+      <td style="text-align:center;white-space:nowrap">
+        ${a.Status === 'Scheduled' ? `
+          <button class="btn btn-success btn-sm" style="padding:5px 8px" title="Mark Complete" onclick="quickUpdateStatus('${a.ApptID}','Completed')">✅</button>
+          <button class="btn btn-danger btn-sm" style="padding:5px 8px" title="Cancel" onclick="quickUpdateStatus('${a.ApptID}','Cancelled')">✕</button>
+          <button class="wa-btn" style="padding:5px 8px" title="WhatsApp: ${phone}" onclick="sendWhatsApp('${a.ApptID}')">${WA_SVG}</button>
+        ` : ''}
+        <button class="btn btn-secondary btn-sm" style="padding:5px 8px" title="View / Edit" onclick="showApptDetailModal('${a.ApptID}')">👁</button>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+async function quickUpdateStatus(id, status) {
+  if (!confirm('Mark this appointment as ' + status + '?')) return;
+  await apiPost({ action: 'updateApptStatus', id, status });
+  await loadAppointments();
+  loadDashboard();
+}
+
+function showApptDetailModal(id) {
   const a = appointments.find(x => x.ApptID === id);
   if (!a) return;
-  document.getElementById('apptDetail').innerHTML = `
-    <div class="fw-600 mb-3">📋 Appointment Details</div>
-    <div style="font-size:.875rem;display:grid;gap:8px">
-      <div><span class="text-muted">ID: </span>${a.ApptID}</div>
-      <div><span class="text-muted">Patient: </span><strong>${a.PatientName}</strong> (${a.PatientID})</div>
-      <div><span class="text-muted">Date: </span>${formatDate(a.Date)}</div>
-      <div><span class="text-muted">Time: </span>${a.Time}</div>
-      <div><span class="text-muted">Type: </span>${a.Type}</div>
-      <div><span class="text-muted">Status: </span>${statusBadge(a.Status)}</div>
-      <div><span class="text-muted">Notes: </span>${a.Notes||'—'}</div>
+  const patient = patients.find(p => p.PatientID === a.PatientID);
+  const phone = patient?.Phone || '—';
+  // show in a small overlay — reuse patientViewModal
+  document.getElementById('patientViewContent').innerHTML = `
+    <div class="flex items-center justify-between mb-3">
+      <h3>📋 ${a.PatientName}</h3>
+      <span class="badge ${statusClass(a.Status)}">${a.Status}</span>
     </div>
-    <div class="btn-group mt-3">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.875rem;margin-bottom:18px">
+      <div><span class="text-muted">Appt ID: </span><code>${a.ApptID}</code></div>
+      <div><span class="text-muted">Patient ID: </span>${a.PatientID}</div>
+      <div><span class="text-muted">Date: </span><strong>${formatDate(a.Date)}</strong></div>
+      <div><span class="text-muted">Time: </span><strong>${a.Time}</strong></div>
+      <div><span class="text-muted">Type: </span>${a.Type}</div>
+      <div><span class="text-muted">Phone: </span>${phone}</div>
+      <div style="grid-column:1/-1"><span class="text-muted">Notes: </span>${a.Notes||'—'}</div>
+    </div>
+    <div class="btn-group">
       ${a.Status === 'Scheduled' ? `
-        <button class="btn btn-success btn-sm" onclick="updateApptStatus('${a.ApptID}','Completed')">✅ Mark Complete</button>
-        <button class="btn btn-danger btn-sm" onclick="updateApptStatus('${a.ApptID}','Cancelled')">✕ Cancel</button>
-        <button class="wa-btn-full" onclick="sendWhatsApp('${a.ApptID}')">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-          WhatsApp Reminder
+        <button class="btn btn-success btn-sm" onclick="quickUpdateStatus('${a.ApptID}','Completed');closeModal('patientViewModal')">✅ Mark Complete</button>
+        <button class="btn btn-danger btn-sm" onclick="quickUpdateStatus('${a.ApptID}','Cancelled');closeModal('patientViewModal')">✕ Cancel</button>
+        <button class="wa-btn-full" style="font-size:.8rem;padding:8px 14px" onclick="closeModal('patientViewModal');sendWhatsApp('${a.ApptID}')">
+          ${WA_SVG} WhatsApp Reminder
         </button>` : ''}
-      <button class="btn btn-secondary btn-sm" onclick="nav('treatments');setTimeout(()=>{document.getElementById('txPatientSelect').value='${a.PatientID}';loadPatientChart()},400)">🦷 Chart</button>
-      <button class="btn btn-secondary btn-sm" onclick="nav('billing');setTimeout(openBillModal,400)">🧾 Bill</button>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('patientViewModal');nav('treatments');setTimeout(()=>{document.getElementById('txPatientSelect').value='${a.PatientID}';loadPatientChart()},400)">🦷 Tooth Chart</button>
+      <button class="btn btn-secondary btn-sm" onclick="closeModal('patientViewModal');nav('billing');setTimeout(openBillModal,400)">🧾 Bill</button>
     </div>`;
+  openModal('patientViewModal');
 }
 
 function openApptModal() {
@@ -1172,7 +1310,7 @@ async function saveAppointment() {
 async function updateApptStatus(id, status) {
   await apiPost({ action: 'updateApptStatus', id, status });
   loadAppointments();
-  document.getElementById('apptDetail').innerHTML = '<div class="empty-state"><div class="icon">✅</div><div>Status updated</div></div>';
+  loadDashboard();
 }
 
 // ═══════════════════════════════════════════════════════
@@ -1760,7 +1898,9 @@ function sendWhatsApp(apptId) {
 }
 
 function openBulkWaModal() {
-  const scheduled = appointments.filter(a => a.Status === 'Scheduled');
+  const today = new Date().toISOString().split('T')[0];
+  const scheduled = appointments.filter(a => a.Status === 'Scheduled' && a.Date >= today)
+    .sort((a,b) => (a.Date+a.Time).localeCompare(b.Date+b.Time));
   const el = document.getElementById('bulkWaList');
   if (!scheduled.length) {
     el.innerHTML = '<div class="empty-state"><div class="icon">📅</div>No scheduled appointments for this date</div>';
@@ -1768,12 +1908,13 @@ function openBulkWaModal() {
     el.innerHTML = `
       <div class="tbl-wrap">
         <table>
-          <thead><tr><th>Time</th><th>Patient</th><th>Type</th><th>Phone</th><th>Action</th></tr></thead>
+          <thead><tr><th>Date</th><th>Time</th><th>Patient</th><th>Type</th><th>Phone</th><th>Action</th></tr></thead>
           <tbody>
             ${scheduled.sort((a,b)=>a.Time.localeCompare(b.Time)).map(a => {
               const patient = patients.find(p => p.PatientID === a.PatientID);
               const phone = patient?.Phone || '—';
               return `<tr>
+                <td>${formatDate(a.Date)}</td>
                 <td><strong>${a.Time}</strong></td>
                 <td>${a.PatientName}</td>
                 <td>${a.Type}</td>
