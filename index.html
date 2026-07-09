@@ -211,6 +211,52 @@ hr{border:none;border-top:1px solid var(--border);margin:16px 0}
 .empty-state{text-align:center;padding:40px 20px;color:var(--muted)}
 .empty-state .icon{font-size:2.5rem;margin-bottom:10px}
 
+/* ── CLINIC MODE ─────────────────────────────────── */
+.allergy-banner{background:#FFEBEE;border:2px solid var(--red);border-radius:10px;padding:12px 16px;display:flex;align-items:center;gap:10px;font-weight:600;color:var(--red);font-size:.9rem}
+.allergy-banner .icon{font-size:1.4rem;flex-shrink:0}
+.patient-hero{background:linear-gradient(135deg,var(--navy) 0%,var(--navy2) 100%);border-radius:14px;padding:20px 24px;color:#fff;display:flex;align-items:center;gap:20px;margin-bottom:20px}
+.patient-hero .avatar{width:60px;height:60px;border-radius:50%;background:rgba(255,255,255,.2);display:flex;align-items:center;justify-content:center;font-size:1.8rem;flex-shrink:0}
+.patient-hero .info{flex:1}
+.patient-hero .name{font-size:1.3rem;font-weight:700}
+.patient-hero .meta{font-size:.82rem;opacity:.8;margin-top:3px}
+.patient-hero .badges{display:flex;gap:8px;margin-top:8px;flex-wrap:wrap}
+.patient-hero .pill{background:rgba(255,255,255,.15);border-radius:20px;padding:3px 10px;font-size:.75rem;font-weight:600}
+.patient-hero .pill.red{background:rgba(198,40,40,.6)}
+.clinic-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.clinic-grid-3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:18px}
+@media(max-width:900px){.clinic-grid,.clinic-grid-3{grid-template-columns:1fr}}
+.section-card{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:18px}
+.section-card .section-head{font-weight:700;font-size:.95rem;color:var(--navy);margin-bottom:14px;display:flex;align-items:center;justify-content:space-between;gap:8px}
+.visit-item{padding:10px 0;border-bottom:1px solid var(--border);display:flex;gap:12px}
+.visit-item:last-child{border-bottom:none}
+.visit-dot{width:10px;height:10px;border-radius:50%;background:var(--blue);flex-shrink:0;margin-top:5px}
+.visit-date{font-size:.75rem;color:var(--muted);min-width:70px}
+.tx-plan-item{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--border)}
+.tx-plan-item:last-child{border-bottom:none}
+.tx-plan-item .status-dot{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.vitals-grid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px}
+.vital-box{background:var(--mint);border-radius:8px;padding:10px;text-align:center}
+.vital-box .v-label{font-size:.7rem;color:var(--muted);text-transform:uppercase;letter-spacing:.05em}
+.vital-box .v-value{font-size:1.1rem;font-weight:700;color:var(--navy);margin-top:2px}
+.next-visit-bar{background:linear-gradient(90deg,#E8F4FD,#fff);border:1.5px solid var(--sky);border-radius:10px;padding:14px 18px;display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+.quick-days{display:flex;gap:6px;flex-wrap:wrap}
+.quick-days button{padding:5px 12px;border-radius:20px;border:1.5px solid var(--border);background:#fff;font-size:.8rem;cursor:pointer;font-weight:600;transition:all .15s}
+.quick-days button:hover,.quick-days button.active{background:var(--navy);color:#fff;border-color:var(--navy)}
+/* Consent form */
+.consent-paper{background:#fff;border:1px solid var(--border);border-radius:10px;padding:32px;max-width:700px;margin:0 auto;font-size:.9rem;line-height:1.7}
+.consent-paper h2{font-size:1.2rem;text-align:center;color:var(--navy);margin-bottom:4px}
+.consent-paper .consent-sub{text-align:center;color:var(--muted);font-size:.8rem;margin-bottom:20px}
+.consent-paper .consent-section{margin-bottom:16px}
+.consent-paper .consent-section h4{font-weight:700;color:var(--navy);margin-bottom:6px;font-size:.9rem}
+.consent-paper .consent-points{padding-left:18px}
+.consent-paper .consent-points li{margin-bottom:4px;font-size:.85rem}
+.consent-paper .sig-row{display:grid;grid-template-columns:1fr 1fr;gap:30px;margin-top:28px}
+.consent-paper .sig-box{border-top:1.5px solid #333;padding-top:6px;font-size:.78rem;color:var(--muted)}
+.consent-type-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:12px;margin-bottom:24px}
+.consent-type-btn{padding:14px;border:2px solid var(--border);border-radius:10px;background:#fff;cursor:pointer;text-align:center;font-size:.85rem;font-weight:600;color:var(--navy);transition:all .15s}
+.consent-type-btn:hover,.consent-type-btn.active{border-color:var(--navy);background:var(--mint)}
+.consent-type-btn .cicon{font-size:1.5rem;display:block;margin-bottom:4px}
+
 @media print{
   #sidebar,#main>.page:not(.active){display:none!important}
   .no-print{display:none!important}
@@ -246,6 +292,8 @@ hr{border:none;border-top:1px solid var(--border);margin:16px 0}
     <a onclick="nav('dashboard')" class="active" data-page="dashboard"><span class="icon">📊</span>Dashboard</a>
     <div class="section-label">Patients</div>
     <a onclick="nav('patients')" data-page="patients"><span class="icon">👤</span>Patients</a>
+    <a onclick="nav('clinic')" data-page="clinic" style="background:rgba(91,155,213,.12);border-left:3px solid var(--sky)"><span class="icon">🩺</span>Clinic Mode</a>
+    <a onclick="nav('consent')" data-page="consent"><span class="icon">📝</span>Consent Forms</a>
     <div class="section-label">Clinical</div>
     <a onclick="nav('appointments')" data-page="appointments"><span class="icon">📅</span>Appointments</a>
     <a onclick="nav('treatments')" data-page="treatments"><span class="icon">🦷</span>Tooth Chart</a>
@@ -563,6 +611,236 @@ hr{border:none;border-top:1px solid var(--border);margin:16px 0}
       <button class="btn btn-primary" onclick="saveSettings()">💾 Save Settings</button>
     </div>
     <div id="settingsAlert" style="margin-top:12px"></div>
+  </div>
+</div>
+
+
+<!-- ════════════ CLINIC MODE ════════════ -->
+<div class="page" id="page-clinic">
+  <div class="flex items-center justify-between mb-3">
+    <div>
+      <div class="page-title">🩺 Clinic Mode</div>
+      <div class="page-sub">Full patient workstation — everything the doctor needs in one screen</div>
+    </div>
+  </div>
+
+  <!-- Patient selector -->
+  <div class="card mb-4" id="clinicPatientSelector">
+    <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+      <div class="form-group" style="flex:1;min-width:240px">
+        <label>Select Patient to Begin Session</label>
+        <select id="clinicPatientSelect" onchange="loadClinicPatient()">
+          <option value="">— Select Patient —</option>
+        </select>
+      </div>
+      <div>
+        <button class="btn btn-primary" onclick="nav('patients');setTimeout(openPatientModal,300)">➕ New Patient</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Patient workspace (hidden until patient selected) -->
+  <div id="clinicWorkspace" style="display:none">
+
+    <!-- Hero banner -->
+    <div class="patient-hero" id="clinicHero"></div>
+
+    <!-- Allergy warning -->
+    <div id="clinicAllergyBanner" style="display:none;margin-bottom:16px"></div>
+
+    <!-- Vitals row -->
+    <div class="section-card mb-4">
+      <div class="section-head">
+        📊 Today's Vitals
+        <button class="btn btn-secondary btn-sm" onclick="saveVitals()">💾 Save Vitals</button>
+      </div>
+      <div class="vitals-grid">
+        <div class="vital-box">
+          <div class="v-label">Blood Pressure</div>
+          <input id="v_bp" placeholder="120/80" style="width:100%;border:none;background:transparent;text-align:center;font-size:1rem;font-weight:700;color:var(--navy);outline:none"/>
+        </div>
+        <div class="vital-box">
+          <div class="v-label">Pulse (bpm)</div>
+          <input id="v_pulse" placeholder="72" type="number" style="width:100%;border:none;background:transparent;text-align:center;font-size:1rem;font-weight:700;color:var(--navy);outline:none"/>
+        </div>
+        <div class="vital-box">
+          <div class="v-label">SpO₂ (%)</div>
+          <input id="v_spo2" placeholder="99" type="number" style="width:100%;border:none;background:transparent;text-align:center;font-size:1rem;font-weight:700;color:var(--navy);outline:none"/>
+        </div>
+      </div>
+    </div>
+
+    <div class="clinic-grid mb-4">
+      <!-- Left: Visit history -->
+      <div class="section-card">
+        <div class="section-head">🕐 Visit History
+          <span id="clinicVisitCount" class="badge badge-blue">0 visits</span>
+        </div>
+        <div id="clinicVisitHistory" style="max-height:280px;overflow-y:auto">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- Right: Tooth chart mini -->
+      <div class="section-card">
+        <div class="section-head">🦷 Tooth Chart
+          <button class="btn btn-secondary btn-sm" onclick="nav('treatments');setTimeout(()=>{document.getElementById('txPatientSelect').value=clinicPID;loadPatientChart();},300)">Open Full Chart</button>
+        </div>
+        <div style="overflow-x:auto">
+          <div id="clinicMiniChart" style="min-width:420px"></div>
+        </div>
+        <div style="display:flex;gap:10px;margin-top:8px;flex-wrap:wrap">
+          <span style="font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--tooth-healthy);border:1.5px solid #ccc;border-radius:2px;display:inline-block"></span>Healthy</span>
+          <span style="font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--tooth-done);border:1.5px solid #66BB6A;border-radius:2px;display:inline-block"></span>Done</span>
+          <span style="font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--tooth-planned);border:1.5px solid #FFA726;border-radius:2px;display:inline-block"></span>Planned</span>
+          <span style="font-size:.72rem;color:var(--muted);display:flex;align-items:center;gap:4px"><span style="width:10px;height:10px;background:var(--tooth-missing);border:1.5px solid #EF9A9A;border-radius:2px;display:inline-block"></span>Missing</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- TODAY'S SESSION -->
+    <div class="section-card mb-4">
+      <div class="section-head">📋 Today's Clinical Notes & Treatment</div>
+      <div class="form-grid mb-3">
+        <div class="form-group full"><label>Chief Complaint (Patient's words)</label>
+          <textarea id="cs_complaint" rows="2" placeholder="e.g. Pain in lower left tooth since 3 days..."></textarea>
+        </div>
+        <div class="form-group full"><label>Clinical Findings / Diagnosis</label>
+          <textarea id="cs_findings" rows="2" placeholder="e.g. Deep caries on tooth 36, pulp exposed..."></textarea>
+        </div>
+      </div>
+      <div class="fw-600 mb-2" style="font-size:.85rem">Treatments Performed Today</div>
+      <div id="clinicTxLines"></div>
+      <button class="btn btn-secondary btn-sm mt-2" onclick="addClinicTxLine()">➕ Add Treatment</button>
+    </div>
+
+    <!-- TREATMENT PLAN -->
+    <div class="section-card mb-4">
+      <div class="section-head">📌 Treatment Plan
+        <button class="btn btn-secondary btn-sm" onclick="loadClinicTxPlan()">↻ Refresh</button>
+      </div>
+      <div id="clinicTxPlan"><div class="spinner"></div></div>
+    </div>
+
+    <!-- PRESCRIPTION WRITER -->
+    <div class="section-card mb-4">
+      <div class="section-head">💊 Prescription</div>
+      <div id="clinicRxLines"></div>
+      <button class="btn btn-secondary btn-sm mt-2" onclick="addClinicRxLine()">➕ Add Medicine</button>
+      <div class="form-group full mt-3">
+        <label>Instructions / Advice to Patient</label>
+        <textarea id="cs_rx_instructions" rows="2" placeholder="e.g. Soft diet, avoid cold foods, use soft brush..."></textarea>
+      </div>
+    </div>
+
+    <!-- BILLING -->
+    <div class="section-card mb-4">
+      <div class="section-head">🧾 Today's Bill
+        <button class="btn btn-secondary btn-sm" onclick="pullTxToBill()">↻ Pull from Treatments</button>
+      </div>
+      <div id="clinicBillLines"></div>
+      <button class="btn btn-secondary btn-sm mt-2" onclick="addClinicBillLine()">➕ Add Item</button>
+      <div style="display:flex;gap:12px;flex-wrap:wrap;align-items:flex-end;margin-top:12px;padding-top:12px;border-top:1px solid var(--border)">
+        <div class="form-group"><label>Discount (₹)</label><input id="cs_discount" type="number" value="0" oninput="calcClinicBill()" style="width:110px"/></div>
+        <div class="form-group"><label>Net Amount</label><input id="cs_net" readonly style="width:120px;font-weight:700;background:#f5f5f5"/></div>
+        <div class="form-group"><label>Paid Now (₹)</label><input id="cs_paid" type="number" value="0" oninput="calcClinicBill()" style="width:110px"/></div>
+        <div class="form-group"><label>Balance</label><input id="cs_balance" readonly style="width:110px;font-weight:700;background:#f5f5f5;color:var(--amber)"/></div>
+        <div class="form-group"><label>Payment Mode</label>
+          <select id="cs_paymode"><option>Cash</option><option>UPI</option><option>Card</option><option>Cheque</option></select>
+        </div>
+      </div>
+    </div>
+
+    <!-- NEXT VISIT -->
+    <div class="section-card mb-4">
+      <div class="section-head">📅 Next Appointment</div>
+      <div class="next-visit-bar">
+        <div style="font-size:.875rem;font-weight:600;color:var(--navy);flex-shrink:0">Come back in:</div>
+        <div class="quick-days">
+          <button onclick="setNextVisitDays(1)">1 day</button>
+          <button onclick="setNextVisitDays(3)">3 days</button>
+          <button onclick="setNextVisitDays(7)">1 week</button>
+          <button onclick="setNextVisitDays(14)">2 weeks</button>
+          <button onclick="setNextVisitDays(30)">1 month</button>
+          <button onclick="setNextVisitDays(90)">3 months</button>
+          <button onclick="setNextVisitDays(180)">6 months</button>
+        </div>
+        <div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap">
+          <div class="form-group" style="margin:0"><label style="font-size:.75rem">Or pick date</label>
+            <input type="date" id="cs_next_date" style="padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem"/>
+          </div>
+          <div class="form-group" style="margin:0"><label style="font-size:.75rem">Time</label>
+            <input type="time" id="cs_next_time" value="10:00" style="padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem"/>
+          </div>
+          <div class="form-group" style="margin:0"><label style="font-size:.75rem">Type</label>
+            <select id="cs_next_type" style="padding:7px 10px;border:1.5px solid var(--border);border-radius:8px;font-size:.875rem">
+              <option>Follow-up</option><option>Root Canal</option><option>Crown</option>
+              <option>Extraction</option><option>Scaling</option><option>Orthodontic</option><option>Consultation</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- SAVE ALL BUTTON -->
+    <div style="background:var(--navy);border-radius:14px;padding:20px 24px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:14px;margin-bottom:24px">
+      <div style="color:#fff">
+        <div style="font-weight:700;font-size:1rem">Save Today's Session</div>
+        <div style="font-size:.8rem;opacity:.7;margin-top:2px">Saves treatment, prescription, bill and next appointment in one click</div>
+      </div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap">
+        <button class="btn" style="background:rgba(255,255,255,.15);color:#fff;border:1.5px solid rgba(255,255,255,.3)" onclick="printClinicSummary()">🖨️ Print Summary</button>
+        <button class="btn" style="background:#25D366;color:#fff" onclick="whatsappClinicSummary()">📱 WhatsApp</button>
+        <button class="btn" style="background:#fff;color:var(--navy);font-weight:700" id="saveSessionBtn" onclick="saveFullSession()">💾 Save Complete Session</button>
+      </div>
+    </div>
+
+    <!-- OUTSTANDING DUES -->
+    <div class="section-card mb-4">
+      <div class="section-head">💰 Billing History & Outstanding</div>
+      <div id="clinicBillHistory"><div class="spinner"></div></div>
+    </div>
+
+    <!-- PRESCRIPTION HISTORY -->
+    <div class="section-card mb-4">
+      <div class="section-head">📜 Past Prescriptions</div>
+      <div id="clinicRxHistory"><div class="spinner"></div></div>
+    </div>
+
+  </div><!-- /clinicWorkspace -->
+</div>
+
+<!-- ════════════ CONSENT FORMS ════════════ -->
+<div class="page" id="page-consent">
+  <div class="flex items-center justify-between mb-3">
+    <div>
+      <div class="page-title">📝 Consent Forms</div>
+      <div class="page-sub">Generate, print and WhatsApp consent forms for patients</div>
+    </div>
+  </div>
+  <div class="card mb-4">
+    <div style="display:flex;gap:12px;align-items:flex-end;flex-wrap:wrap">
+      <div class="form-group" style="flex:1;min-width:240px">
+        <label>Select Patient</label>
+        <select id="consentPatientSelect" onchange="loadConsentPatient()">
+          <option value="">— Select Patient —</option>
+        </select>
+      </div>
+    </div>
+  </div>
+  <!-- Consent type picker -->
+  <div id="consentTypePicker" style="display:none">
+    <div class="consent-type-grid">
+      <button class="consent-type-btn" onclick="generateConsent('general')"><span class="cicon">📋</span>General Treatment</button>
+      <button class="consent-type-btn" onclick="generateConsent('extraction')"><span class="cicon">🦷</span>Extraction</button>
+      <button class="consent-type-btn" onclick="generateConsent('rct')"><span class="cicon">🔬</span>Root Canal (RCT)</button>
+      <button class="consent-type-btn" onclick="generateConsent('crown')"><span class="cicon">👑</span>Crown / Bridge</button>
+      <button class="consent-type-btn" onclick="generateConsent('implant')"><span class="cicon">🔩</span>Implant</button>
+      <button class="consent-type-btn" onclick="generateConsent('ortho')"><span class="cicon">😬</span>Orthodontic / Braces</button>
+      <button class="consent-type-btn" onclick="generateConsent('anaesthesia')"><span class="cicon">💉</span>Local Anaesthesia</button>
+      <button class="consent-type-btn" onclick="generateConsent('newpatient')"><span class="cicon">🆕</span>New Patient Form</button>
+    </div>
+    <div id="consentPreview"></div>
   </div>
 </div>
 
@@ -2091,3 +2369,766 @@ function statusClass(s) {
 </div>
 </body>
 </html>
+<script id="clinic-js">
+// ═══════════════════════════════════════════════════════
+//  CLINIC MODE
+// ═══════════════════════════════════════════════════════
+var clinicPID = null;
+var clinicPatient = null;
+var clinicTxRecordsList = [];
+var clinicApptList = [];
+var clinicBillList = [];
+var clinicRxList2 = [];
+
+function populateClinicSelect() {
+  var opts = '<option value="">— Select Patient —</option>';
+  patients.forEach(function(p) {
+    opts += '<option value="' + p.PatientID + '">' + p.PatientID + ' — ' + p.Name + '</option>';
+  });
+  var el = document.getElementById('clinicPatientSelect');
+  var el2 = document.getElementById('consentPatientSelect');
+  if (el) el.innerHTML = opts;
+  if (el2) el2.innerHTML = opts;
+}
+
+async function loadClinicPatient() {
+  var pid = document.getElementById('clinicPatientSelect').value;
+  if (!pid) { document.getElementById('clinicWorkspace').style.display = 'none'; return; }
+  clinicPID = pid;
+  clinicPatient = patients.find(function(p) { return p.PatientID === pid; });
+  if (!clinicPatient) return;
+  document.getElementById('clinicWorkspace').style.display = 'block';
+
+  // Hero
+  renderClinicHero();
+
+  // Allergy warning
+  renderAllergyBanner();
+
+  // Load all data in parallel
+  var results = await Promise.all([
+    apiGet({ action: 'getTreatments',    patientId: pid }),
+    apiGet({ action: 'getAppointments',  patientId: pid }),
+    apiGet({ action: 'getBills',         patientId: pid }),
+    apiGet({ action: 'getPrescriptions', patientId: pid }),
+  ]);
+  clinicTxRecordsList = results[0].data || [];
+  clinicApptList      = results[1].data || [];
+  clinicBillList      = results[2].data || [];
+  clinicRxList2       = results[3].data || [];
+
+  renderClinicVisitHistory();
+  renderClinicMiniChart();
+  renderClinicTxPlan();
+  renderClinicBillHistory();
+  renderClinicRxHistory();
+  initClinicSession();
+}
+
+function renderClinicHero() {
+  var p = clinicPatient;
+  var age = p.Age || '—';
+  var gender = p.Gender || '';
+  var blood = p.BloodGroup || '—';
+  var phone = p.Phone || '—';
+  var med = p.MedHistory || 'None';
+  document.getElementById('clinicHero').innerHTML =
+    '<div class="avatar">👤</div>'
+    + '<div class="info">'
+    + '<div class="name">' + p.Name + '</div>'
+    + '<div class="meta">' + p.PatientID + ' &nbsp;|&nbsp; Age: ' + age + ' &nbsp;|&nbsp; ' + gender + ' &nbsp;|&nbsp; 📞 ' + phone + '</div>'
+    + '<div class="badges">'
+    + '<span class="pill">🩸 ' + blood + '</span>'
+    + (p.Allergies && p.Allergies !== 'None' && p.Allergies !== '' ? '<span class="pill red">⚠️ Allergic: ' + p.Allergies + '</span>' : '<span class="pill">✅ No known allergies</span>')
+    + '<span class="pill">📋 ' + med + '</span>'
+    + '</div>'
+    + '</div>'
+    + '<div style="flex-shrink:0;text-align:right">'
+    + '<button class="btn btn-sm" style="background:rgba(255,255,255,.15);color:#fff;margin-bottom:6px;width:100%" onclick="nav(\'patients\');setTimeout(function(){editPatient(\'' + p.PatientID + '\');},300)">✏️ Edit Patient</button>'
+    + '<button class="btn btn-sm" style="background:rgba(37,211,102,.25);color:#fff;width:100%" onclick="nav(\'consent\');setTimeout(function(){document.getElementById(\'consentPatientSelect\').value=\'' + p.PatientID + '\';loadConsentPatient();},300)">📝 Consent Form</button>'
+    + '</div>';
+}
+
+function renderAllergyBanner() {
+  var p = clinicPatient;
+  var el = document.getElementById('clinicAllergyBanner');
+  if (p.Allergies && p.Allergies !== 'None' && p.Allergies !== '' && p.Allergies !== '—') {
+    el.style.display = 'flex';
+    el.innerHTML = '<div class="icon">🚨</div><div><strong>ALLERGY ALERT:</strong> Patient is allergic to <strong>' + p.Allergies + '</strong> — verify all medicines and materials before use</div>';
+  } else {
+    el.style.display = 'none';
+  }
+}
+
+function renderClinicVisitHistory() {
+  var el = document.getElementById('clinicVisitHistory');
+  // Build timeline from appointments + treatments
+  var visits = clinicApptList
+    .filter(function(a) { return a.Status === 'Completed'; })
+    .sort(function(a,b) { return b.Date.localeCompare(a.Date); });
+
+  document.getElementById('clinicVisitCount').textContent = visits.length + ' visits';
+
+  if (!visits.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:20px">No past visits</div>';
+    return;
+  }
+
+  var html = '';
+  visits.forEach(function(v) {
+    var tx = clinicTxRecordsList.filter(function(t) { return t.ApptID === v.ApptID; });
+    var bill = clinicBillList.find(function(b) { return b.ApptID === v.ApptID; });
+    html += '<div class="visit-item">'
+      + '<div class="visit-dot"></div>'
+      + '<div style="flex:1">'
+      + '<div style="display:flex;justify-content:space-between;align-items:center">'
+      + '<strong style="font-size:.875rem">' + formatDate(v.Date) + ' — ' + v.Type + '</strong>'
+      + (bill ? '<span class="badge badge-green">₹' + fmt(bill.Paid) + '</span>' : '')
+      + '</div>'
+      + (tx.length ? '<div class="text-sm text-muted mt-2">' + tx.map(function(t){ return (t.TxDone || t.TxPlanned || t.Diagnosis || ''); }).filter(Boolean).join(' • ') + '</div>' : '')
+      + (v.Notes ? '<div class="text-sm text-muted" style="font-style:italic">' + v.Notes + '</div>' : '')
+      + '</div>'
+      + '</div>';
+  });
+  el.innerHTML = html;
+}
+
+function renderClinicMiniChart() {
+  var el = document.getElementById('clinicMiniChart');
+  var upperRight = [18,17,16,15,14,13,12,11];
+  var upperLeft  = [21,22,23,24,25,26,27,28];
+  var lowerLeft  = [31,32,33,34,35,36,37,38];
+  var lowerRight = [41,42,43,44,45,46,47,48];
+
+  function miniTooth(n) {
+    var tx = clinicTxRecordsList.find(function(t) { return String(t.ToothFDI) === String(n); });
+    var cls = 'tooth', title = 'Tooth ' + n;
+    if (tx) {
+      var done = (tx.TxDone || '').toLowerCase();
+      if (done.includes('extract') || done.includes('missing')) { cls += ' missing'; title += ': Missing'; }
+      else if (tx.TxDone) { cls += ' done'; title += ': ' + tx.TxDone; }
+      else if (tx.TxPlanned) { cls += ' planned'; title += ': Planned - ' + tx.TxPlanned; }
+    }
+    // Smaller size for mini chart
+    return '<div class="' + cls + '" style="width:28px;height:36px;font-size:.55rem" title="' + title + '">'
+      + '<div class="tooth-crown" style="width:18px;height:16px"></div>' + n + '</div>';
+  }
+
+  function row(teeth) {
+    return '<div class="jaw-row" style="gap:2px">' + teeth.map(miniTooth).join('') + '</div>';
+  }
+
+  el.innerHTML =
+    '<div style="font-size:.7rem;color:var(--muted);text-align:center;margin-bottom:4px">Upper</div>'
+    + '<div class="jaw-row" style="gap:2px;justify-content:center">'
+    + upperRight.map(miniTooth).join('')
+    + '<div style="width:2px;background:var(--border);margin:0 3px"></div>'
+    + upperLeft.map(miniTooth).join('')
+    + '</div>'
+    + '<div style="height:6px"></div>'
+    + '<div class="jaw-row" style="gap:2px;justify-content:center">'
+    + lowerLeft.map(miniTooth).join('')
+    + '<div style="width:2px;background:var(--border);margin:0 3px"></div>'
+    + lowerRight.map(miniTooth).join('')
+    + '</div>'
+    + '<div style="font-size:.7rem;color:var(--muted);text-align:center;margin-top:4px">Lower</div>';
+}
+
+function renderClinicTxPlan() {
+  var el = document.getElementById('clinicTxPlan');
+  var planned = clinicTxRecordsList.filter(function(t) { return t.TxPlanned && !t.TxDone; });
+  var done    = clinicTxRecordsList.filter(function(t) { return t.TxDone; });
+  if (!planned.length && !done.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:12px">No treatment plan recorded yet</div>';
+    return;
+  }
+  var html = '';
+  if (planned.length) {
+    html += '<div class="text-sm fw-600 text-muted mb-2">PENDING</div>';
+    planned.forEach(function(t) {
+      html += '<div class="tx-plan-item">'
+        + '<div class="status-dot" style="background:var(--amber)"></div>'
+        + '<div style="flex:1"><strong>Tooth ' + (t.ToothFDI||'—') + '</strong> — ' + t.TxPlanned + '</div>'
+        + '<span class="badge badge-amber">Planned</span>'
+        + '</div>';
+    });
+  }
+  if (done.length) {
+    html += '<div class="text-sm fw-600 text-muted mb-2 mt-3">COMPLETED</div>';
+    done.forEach(function(t) {
+      html += '<div class="tx-plan-item">'
+        + '<div class="status-dot" style="background:var(--teal)"></div>'
+        + '<div style="flex:1"><strong>Tooth ' + (t.ToothFDI||'—') + '</strong> — ' + t.TxDone + '</div>'
+        + '<span class="badge badge-green">Done</span>'
+        + '</div>';
+    });
+  }
+  el.innerHTML = html;
+}
+
+function renderClinicBillHistory() {
+  var el = document.getElementById('clinicBillHistory');
+  if (!clinicBillList.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:12px">No billing records</div>';
+    return;
+  }
+  var totalDue = clinicBillList.reduce(function(s,b){ return s + parseFloat(b.Balance||0); }, 0);
+  var html = '';
+  if (totalDue > 0) {
+    html += '<div class="alert alert-error mb-3">⚠️ Total outstanding: <strong>₹' + fmt(totalDue) + '</strong></div>';
+  }
+  html += '<div class="tbl-wrap"><table><thead><tr><th>Bill ID</th><th>Date</th><th>Net</th><th>Paid</th><th>Balance</th><th>Status</th></tr></thead><tbody>';
+  clinicBillList.sort(function(a,b){return b.Date.localeCompare(a.Date);}).forEach(function(b) {
+    html += '<tr><td><code>' + b.BillID + '</code></td><td>' + formatDate(b.Date) + '</td>'
+      + '<td>₹' + fmt(b.Net) + '</td><td style="color:var(--green)">₹' + fmt(b.Paid) + '</td>'
+      + '<td style="color:var(--amber)">₹' + fmt(b.Balance) + '</td><td>' + statusBadge(b.Status) + '</td></tr>';
+  });
+  html += '</tbody></table></div>';
+  el.innerHTML = html;
+}
+
+function renderClinicRxHistory() {
+  var el = document.getElementById('clinicRxHistory');
+  if (!clinicRxList2.length) {
+    el.innerHTML = '<div class="empty-state" style="padding:12px">No prescriptions yet</div>';
+    return;
+  }
+  var html = '';
+  clinicRxList2.sort(function(a,b){return b.Date.localeCompare(a.Date);}).slice(0,5).forEach(function(r) {
+    var meds = Array.isArray(r.Medicines) ? r.Medicines : [];
+    html += '<div style="padding:10px 0;border-bottom:1px solid var(--border)">'
+      + '<div class="flex justify-between"><strong>Rx ' + r.RxID + '</strong><span class="text-sm text-muted">' + formatDate(r.Date) + '</span></div>'
+      + '<div class="text-sm text-muted mt-2">' + meds.map(function(m){ return '• ' + m.name + ' ' + (m.strength||'') + ' — ' + (m.dose||'') + ', ' + (m.duration||''); }).join('<br>') + '</div>'
+      + '<button class="btn btn-secondary btn-sm mt-2" onclick="previewRx(\'' + r.RxID + '\')">🖨️ Print</button>'
+      + '</div>';
+  });
+  el.innerHTML = html;
+}
+
+// ── Session init ──────────────────────────────────────
+function initClinicSession() {
+  document.getElementById('clinicTxLines').innerHTML = '';
+  document.getElementById('clinicRxLines').innerHTML = '';
+  document.getElementById('clinicBillLines').innerHTML = '';
+  document.getElementById('cs_complaint').value = '';
+  document.getElementById('cs_findings').value = '';
+  document.getElementById('cs_rx_instructions').value = '';
+  document.getElementById('cs_discount').value = '0';
+  document.getElementById('cs_paid').value = '0';
+  document.getElementById('cs_net').value = '';
+  document.getElementById('cs_balance').value = '';
+  document.getElementById('v_bp').value = '';
+  document.getElementById('v_pulse').value = '';
+  document.getElementById('v_spo2').value = '';
+  addClinicTxLine();
+  addClinicRxLine();
+  addClinicBillLine();
+}
+
+// ── Treatment lines ───────────────────────────────────
+function addClinicTxLine() {
+  var idx = document.getElementById('clinicTxLines').children.length;
+  var txOpts = '<option value="">— Select Treatment —</option>' + treatmentMaster.map(function(t){ return '<option value="' + t.Name + '|||' + t.DefaultFee + '">' + t.Name + '</option>'; }).join('');
+  var div = document.createElement('div');
+  div.style.cssText = 'display:grid;grid-template-columns:1fr 1fr 80px auto;gap:8px;margin-bottom:8px;align-items:end';
+  div.innerHTML =
+    '<div class="form-group"><label>Tooth (FDI)</label><input id="ctx_tooth_' + idx + '" placeholder="e.g. 36"/></div>'
+    + '<div class="form-group"><label>Treatment Done</label>'
+    + '<select id="ctx_tx_' + idx + '" onchange="fillClinicTxLine(' + idx + ')">' + txOpts + '</select></div>'
+    + '<div class="form-group"><label>Fee (₹)</label><input id="ctx_fee_' + idx + '" type="number" value="0" oninput="calcClinicBill()"/></div>'
+    + '<div style="padding-bottom:2px"><button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove();calcClinicBill()">✕</button></div>';
+  document.getElementById('clinicTxLines').appendChild(div);
+}
+
+function fillClinicTxLine(idx) {
+  var v = document.getElementById('ctx_tx_' + idx).value;
+  if (!v) return;
+  var parts = v.split('|||');
+  if (parts[1]) document.getElementById('ctx_fee_' + idx).value = parts[1];
+  pullTxToBill();
+}
+
+function pullTxToBill() {
+  // Sync treatment lines to bill
+  var billLines = document.getElementById('clinicBillLines');
+  billLines.innerHTML = '';
+  var txLines = document.getElementById('clinicTxLines').children;
+  for (var i = 0; i < txLines.length; i++) {
+    var sel = document.getElementById('ctx_tx_' + i);
+    var fee = document.getElementById('ctx_fee_' + i);
+    if (!sel || !fee) continue;
+    var name = sel.value ? sel.value.split('|||')[0] : '';
+    if (!name) continue;
+    addClinicBillLineWith(name, 1, parseFloat(fee.value)||0);
+  }
+  calcClinicBill();
+}
+
+// ── Rx lines ─────────────────────────────────────────
+function addClinicRxLine() {
+  var idx = document.getElementById('clinicRxLines').children.length;
+  var medOpts = medicineMaster.map(function(m){ return '<option value="' + m.Name + '|||' + (m.Strength||'') + '|||' + (m.DefaultDose||'') + '|||' + (m.DefaultDuration||'') + '|||' + (m.DefaultInstructions||'') + '">' + m.Name + ' ' + (m.Strength||'') + '</option>'; }).join('');
+  var div = document.createElement('div');
+  div.style.cssText = 'display:grid;grid-template-columns:2fr 1fr 1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:end';
+  div.innerHTML =
+    '<div class="form-group"><label>Medicine</label>'
+    + '<select id="crx_sel_' + idx + '" onchange="fillClinicRxLine(' + idx + ')">'
+    + '<option value="">— Select —</option>' + medOpts + '</select>'
+    + '<input id="crx_name_' + idx + '" placeholder="or type name" style="margin-top:4px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:.84rem;width:100%"/></div>'
+    + '<div class="form-group"><label>Dose</label><input id="crx_dose_' + idx + '" placeholder="1 tablet"/></div>'
+    + '<div class="form-group"><label>Duration</label><input id="crx_dur_' + idx + '" placeholder="5 days"/></div>'
+    + '<div class="form-group"><label>Instructions</label><input id="crx_inst_' + idx + '" placeholder="After food"/></div>'
+    + '<div style="padding-bottom:2px"><button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove()">✕</button></div>';
+  document.getElementById('clinicRxLines').appendChild(div);
+}
+
+function fillClinicRxLine(idx) {
+  var v = document.getElementById('crx_sel_' + idx).value;
+  if (!v) return;
+  var parts = v.split('|||');
+  document.getElementById('crx_name_' + idx).value = parts[0] + (parts[1] ? ' ' + parts[1] : '');
+  document.getElementById('crx_dose_' + idx).value = parts[2] || '';
+  document.getElementById('crx_dur_' + idx).value  = parts[3] || '';
+  document.getElementById('crx_inst_' + idx).value = parts[4] || '';
+}
+
+// ── Bill lines ────────────────────────────────────────
+function addClinicBillLine() {
+  addClinicBillLineWith('', 1, 0);
+}
+
+function addClinicBillLineWith(name, qty, rate) {
+  var idx = document.getElementById('clinicBillLines').children.length;
+  var txOpts = '<option value="">— Select —</option>' + treatmentMaster.map(function(t){ return '<option value="' + t.Name + '|||' + t.DefaultFee + '">' + t.Name + ' — ₹' + fmt(t.DefaultFee) + '</option>'; }).join('');
+  var div = document.createElement('div');
+  div.style.cssText = 'display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:8px;margin-bottom:8px;align-items:end';
+  div.innerHTML =
+    '<div class="form-group"><label>Item</label>'
+    + '<select id="cbl_sel_' + idx + '" onchange="fillClinicBillLine(' + idx + ')">' + txOpts + '</select>'
+    + '<input id="cbl_name_' + idx + '" value="' + (name||'') + '" placeholder="or type item" style="margin-top:4px;padding:7px 10px;border:1.5px solid var(--border);border-radius:6px;font-size:.84rem;width:100%"/></div>'
+    + '<div class="form-group"><label>Qty</label><input id="cbl_qty_' + idx + '" type="number" value="' + (qty||1) + '" oninput="calcClinicBill()"/></div>'
+    + '<div class="form-group"><label>Rate (₹)</label><input id="cbl_rate_' + idx + '" type="number" value="' + (rate||0) + '" oninput="calcClinicBill()"/></div>'
+    + '<div style="padding-bottom:2px"><button class="btn btn-danger btn-sm" onclick="this.parentElement.parentElement.remove();calcClinicBill()">✕</button></div>';
+  document.getElementById('clinicBillLines').appendChild(div);
+  calcClinicBill();
+}
+
+function fillClinicBillLine(idx) {
+  var v = document.getElementById('cbl_sel_' + idx).value;
+  if (!v) return;
+  var parts = v.split('|||');
+  document.getElementById('cbl_name_' + idx).value = parts[0];
+  document.getElementById('cbl_rate_' + idx).value = parts[1] || 0;
+  calcClinicBill();
+}
+
+function calcClinicBill() {
+  var lines = document.getElementById('clinicBillLines').children;
+  var gross = 0;
+  for (var i = 0; i < lines.length; i++) {
+    var qty  = parseFloat(document.getElementById('cbl_qty_' + i)?.value || 0);
+    var rate = parseFloat(document.getElementById('cbl_rate_' + i)?.value || 0);
+    gross += qty * rate;
+  }
+  var disc  = parseFloat(document.getElementById('cs_discount').value || 0);
+  var paid  = parseFloat(document.getElementById('cs_paid').value || 0);
+  var net   = gross - disc;
+  document.getElementById('cs_net').value     = '₹' + fmt(net);
+  document.getElementById('cs_balance').value = '₹' + fmt(Math.max(0, net - paid));
+}
+
+// ── Next visit ────────────────────────────────────────
+function setNextVisitDays(n) {
+  var dt = new Date();
+  dt.setDate(dt.getDate() + n);
+  document.getElementById('cs_next_date').value = dt.toISOString().split('T')[0];
+  document.querySelectorAll('.quick-days button').forEach(function(b) { b.classList.remove('active'); });
+  event.target.classList.add('active');
+}
+
+// ── Save full session ─────────────────────────────────
+async function saveFullSession() {
+  if (!clinicPID || !clinicPatient) { alert('No patient selected'); return; }
+  var btn = document.getElementById('saveSessionBtn');
+  btn.disabled = true; btn.textContent = 'Saving...';
+  var today = new Date().toISOString().split('T')[0];
+  var promises = [];
+
+  // 1. Save treatment records
+  var txLines = document.getElementById('clinicTxLines').children;
+  var txItems = [];
+  for (var i = 0; i < txLines.length; i++) {
+    var tooth = document.getElementById('ctx_tooth_' + i)?.value || '';
+    var txSel = document.getElementById('ctx_tx_' + i)?.value || '';
+    var txName = txSel ? txSel.split('|||')[0] : '';
+    if (!txName) continue;
+    txItems.push(txName);
+    promises.push(apiPost({ action: 'saveTreatment', data: {
+      PatientID: clinicPID, Date: today,
+      ToothFDI: tooth,
+      Diagnosis: document.getElementById('cs_findings').value,
+      TxDone: txName, TxPlanned: '',
+      Notes: document.getElementById('cs_complaint').value
+    }}));
+  }
+
+  // 2. Save prescription
+  var rxLines = document.getElementById('clinicRxLines').children;
+  var meds = [];
+  for (var i = 0; i < rxLines.length; i++) {
+    var name = document.getElementById('crx_name_' + i)?.value;
+    if (!name) continue;
+    meds.push({
+      name: name,
+      dose: document.getElementById('crx_dose_' + i)?.value || '',
+      duration: document.getElementById('crx_dur_' + i)?.value || '',
+      instructions: document.getElementById('crx_inst_' + i)?.value || ''
+    });
+  }
+  var rxId = null;
+  if (meds.length) {
+    var rxRes = await apiPost({ action: 'saveRx', data: {
+      PatientID: clinicPID, PatientName: clinicPatient.Name,
+      Date: today, Medicines: meds,
+      Instructions: document.getElementById('cs_rx_instructions').value
+    }});
+    rxId = rxRes.id;
+  }
+
+  // 3. Save bill
+  var billLines = document.getElementById('clinicBillLines').children;
+  var billItems = [];
+  var gross = 0;
+  for (var i = 0; i < billLines.length; i++) {
+    var bname = document.getElementById('cbl_name_' + i)?.value;
+    if (!bname) continue;
+    var qty  = parseFloat(document.getElementById('cbl_qty_' + i)?.value || 1);
+    var rate = parseFloat(document.getElementById('cbl_rate_' + i)?.value || 0);
+    var amt  = qty * rate;
+    gross += amt;
+    billItems.push({ name: bname, qty: qty, rate: rate, amount: amt });
+  }
+  var disc   = parseFloat(document.getElementById('cs_discount').value || 0);
+  var net    = gross - disc;
+  var paid   = parseFloat(document.getElementById('cs_paid').value || 0);
+  var balance = Math.max(0, net - paid);
+  var billId = null;
+  if (billItems.length) {
+    var billRes = await apiPost({ action: 'saveBill', data: {
+      PatientID: clinicPID, PatientName: clinicPatient.Name,
+      Date: today, Items: billItems,
+      Gross: gross, Discount: disc, Net: net,
+      Paid: paid, Balance: balance,
+      PaymentMode: document.getElementById('cs_paymode').value,
+      Status: balance <= 0 ? 'Paid' : (paid > 0 ? 'Partial' : 'Pending')
+    }});
+    billId = billRes.id;
+  }
+
+  // 4. Book next appointment
+  var nextDate = document.getElementById('cs_next_date').value;
+  var nextAppt = null;
+  if (nextDate) {
+    var apptRes = await apiPost({ action: 'saveAppointment', data: {
+      PatientID: clinicPID, PatientName: clinicPatient.Name,
+      Date: nextDate,
+      Time: document.getElementById('cs_next_time').value,
+      Type: document.getElementById('cs_next_type').value,
+      Status: 'Scheduled',
+      Notes: 'Booked from Clinic Mode session on ' + today
+    }});
+    nextAppt = apptRes.id;
+  }
+
+  await Promise.all(promises);
+
+  btn.disabled = false; btn.textContent = '💾 Save Complete Session';
+  alert('Session saved!\n' 
+    + (meds.length ? '✅ Prescription ' + (rxId||'') + ' saved\n' : '')
+    + (billItems.length ? '✅ Bill ' + (billId||'') + ' created — ₹' + fmt(net) + '\n' : '')
+    + (nextAppt ? '✅ Next appointment booked for ' + formatDate(nextDate) : ''));
+
+  // Refresh data
+  await loadClinicPatient();
+  if (billId) {
+    var b = await apiGet({ action: 'getBills', patientId: clinicPID });
+    var billData = (b.data||[]).find(function(x){ return x.BillID === billId; });
+    if (billData) previewBillData(billData);
+  }
+}
+
+function saveVitals() {
+  // Vitals stored as notes in a treatment record (lightweight)
+  var bp = document.getElementById('v_bp').value;
+  var pulse = document.getElementById('v_pulse').value;
+  var spo2 = document.getElementById('v_spo2').value;
+  if (!bp && !pulse && !spo2) { alert('Enter at least one vital'); return; }
+  var today = new Date().toISOString().split('T')[0];
+  apiPost({ action: 'saveTreatment', data: {
+    PatientID: clinicPID, Date: today,
+    ToothFDI: 'Vitals', Diagnosis: 'Vitals recorded',
+    TxDone: '', TxPlanned: '',
+    Notes: 'BP: ' + (bp||'—') + ' | Pulse: ' + (pulse||'—') + ' bpm | SpO₂: ' + (spo2||'—') + '%'
+  }}).then(function() { alert('Vitals saved ✅'); });
+}
+
+async function loadClinicTxPlan() {
+  var res = await apiGet({ action: 'getTreatments', patientId: clinicPID });
+  clinicTxRecordsList = res.data || [];
+  renderClinicTxPlan();
+  renderClinicMiniChart();
+}
+
+function printClinicSummary() { window.print(); }
+
+function whatsappClinicSummary() {
+  if (!clinicPatient) return;
+  var today = new Date().toISOString().split('T')[0];
+  var nextDate = document.getElementById('cs_next_date').value;
+  var msg = '*' + (settings.clinic_name||'Dental Clinic') + '* — Visit Summary\n\n'
+    + 'Dear *' + clinicPatient.Name + '*,\n\n'
+    + 'Thank you for visiting us today (' + formatDate(today) + ').\n\n';
+  var complaint = document.getElementById('cs_complaint').value;
+  if (complaint) msg += '📋 *Chief Complaint:* ' + complaint + '\n\n';
+  var rxLines = document.getElementById('clinicRxLines').children;
+  var meds = [];
+  for (var i = 0; i < rxLines.length; i++) {
+    var n = document.getElementById('crx_name_' + i)?.value;
+    if (n) meds.push(n);
+  }
+  if (meds.length) msg += '💊 *Medicines prescribed:*\n' + meds.map(function(m){ return '• ' + m; }).join('\n') + '\n\n';
+  var inst = document.getElementById('cs_rx_instructions').value;
+  if (inst) msg += '📌 *Instructions:* ' + inst + '\n\n';
+  if (nextDate) msg += '📅 *Next appointment:* ' + formatDate(nextDate) + ' at ' + document.getElementById('cs_next_time').value + '\n\n';
+  msg += '_' + (settings.clinic_name||'Dental Clinic') + ' | ' + (settings.phone||'') + '_';
+  var phone = clinicPatient.Phone ? clinicPatient.Phone.replace(/[^0-9]/g,'') : '';
+  if (phone.length === 10) phone = '91' + phone;
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// ═══════════════════════════════════════════════════════
+//  CONSENT FORMS
+// ═══════════════════════════════════════════════════════
+var consentPatient = null;
+
+function loadConsentPatient() {
+  var pid = document.getElementById('consentPatientSelect').value;
+  if (!pid) { document.getElementById('consentTypePicker').style.display = 'none'; return; }
+  consentPatient = patients.find(function(p) { return p.PatientID === pid; });
+  document.getElementById('consentTypePicker').style.display = 'block';
+  document.getElementById('consentPreview').innerHTML = '';
+  document.querySelectorAll('.consent-type-btn').forEach(function(b){ b.classList.remove('active'); });
+}
+
+function generateConsent(type) {
+  document.querySelectorAll('.consent-type-btn').forEach(function(b){ b.classList.remove('active'); });
+  event.target.closest('.consent-type-btn').classList.add('active');
+  var p = consentPatient;
+  var s = settings;
+  var today = new Date().toLocaleDateString('en-IN', {day:'2-digit',month:'long',year:'numeric'});
+  var clinicHeader =
+    '<div style="text-align:center;margin-bottom:16px">'
+    + '<div style="font-size:1.3rem;font-weight:700;color:var(--navy)">' + (s.clinic_name||'Dental Clinic') + '</div>'
+    + '<div style="color:var(--blue)">' + (s.doctor_name||'Dr.') + ' | ' + (s.degree||'BDS') + '</div>'
+    + '<div style="font-size:.8rem;color:var(--muted)">' + (s.address||'') + ' | ' + (s.phone||'') + '</div>'
+    + '</div>';
+
+  var patientBlock =
+    '<div style="background:var(--mint);border-radius:8px;padding:12px 16px;margin-bottom:16px;font-size:.85rem;display:grid;grid-template-columns:1fr 1fr;gap:6px">'
+    + '<div><span class="text-muted">Patient Name: </span><strong>' + p.Name + '</strong></div>'
+    + '<div><span class="text-muted">Patient ID: </span>' + p.PatientID + '</div>'
+    + '<div><span class="text-muted">Age / Gender: </span>' + (p.Age||'') + ' / ' + (p.Gender||'') + '</div>'
+    + '<div><span class="text-muted">Phone: </span>' + (p.Phone||'') + '</div>'
+    + '<div><span class="text-muted">Blood Group: </span>' + (p.BloodGroup||'—') + '</div>'
+    + '<div><span class="text-muted">Allergies: </span><span style="color:var(--red)">' + (p.Allergies||'None') + '</span></div>'
+    + '</div>';
+
+  var sigBlock =
+    '<div class="sig-row">'
+    + '<div class="sig-box">Patient / Guardian Signature<br><br><br>Name: ____________________<br>Date: ' + today + '</div>'
+    + '<div class="sig-box">Doctor\'s Signature<br><br><br>' + (s.doctor_name||'Dr.') + '<br>' + (s.degree||'BDS') + '</div>'
+    + '</div>';
+
+  var content = '';
+  var title = '';
+
+  if (type === 'general') {
+    title = 'General Treatment Consent Form';
+    content =
+      '<div class="consent-section"><h4>I understand and agree to the following:</h4>'
+      + '<ol class="consent-points">'
+      + '<li>I voluntarily consent to the dental examination and any treatment recommended by the dentist.</li>'
+      + '<li>The nature of the proposed treatment and alternatives have been explained to me.</li>'
+      + '<li>I understand that dentistry is not an exact science and that results cannot be guaranteed.</li>'
+      + '<li>I have disclosed all known medical conditions, allergies, and medications to the dentist.</li>'
+      + '<li>I consent to the administration of local anaesthesia as required.</li>'
+      + '<li>I understand that photographs or X-rays may be taken for diagnostic and treatment purposes.</li>'
+      + '<li>I consent to the use of my anonymised data for treatment planning and clinical records.</li>'
+      + '<li>I understand my right to withdraw consent at any time.</li>'
+      + '</ol></div>'
+      + '<div class="consent-section"><h4>Medical History Confirmation:</h4>'
+      + '<p style="font-size:.85rem">Patient has disclosed: ' + (p.MedHistory||'No known conditions') + '. Known allergies: ' + (p.Allergies||'None') + '.</p></div>';
+  }
+  else if (type === 'extraction') {
+    title = 'Informed Consent — Tooth Extraction';
+    content =
+      '<div class="consent-section"><h4>Procedure:</h4><p style="font-size:.85rem">Surgical or simple extraction of tooth/teeth as advised by Dr. ' + (s.doctor_name||'') + '.</p></div>'
+      + '<div class="consent-section"><h4>I understand and acknowledge:</h4>'
+      + '<ol class="consent-points">'
+      + '<li>The tooth/teeth identified for extraction cannot be saved by other means, or I choose extraction after alternatives were explained.</li>'
+      + '<li>Local anaesthesia will be administered. There may be temporary numbness after the procedure.</li>'
+      + '<li>Post-extraction bleeding, swelling, bruising, and pain are normal and expected.</li>'
+      + '<li>There is a risk of dry socket (alveolar osteitis) which may require additional treatment.</li>'
+      + '<li>Adjacent teeth, nerves (including numbness/tingling), and sinus (for upper teeth) may rarely be affected.</li>'
+      + '<li>I will follow all post-operative instructions including biting on gauze, diet restrictions, and medication as prescribed.</li>'
+      + '<li>If I am on blood thinners, anticoagulants, or bisphosphonates, I have informed the doctor in advance.</li>'
+      + '<li>Smoking and alcohol must be avoided for at least 48 hours post-extraction.</li>'
+      + '</ol></div>'
+      + '<div class="consent-section"><h4>Tooth/Teeth to be extracted:</h4>'
+      + '<div style="border:1.5px solid var(--border);border-radius:6px;padding:12px;min-height:40px;font-size:.85rem">_________________________________</div></div>';
+  }
+  else if (type === 'rct') {
+    title = 'Informed Consent — Root Canal Treatment (RCT)';
+    content =
+      '<div class="consent-section"><h4>Procedure:</h4><p style="font-size:.85rem">Endodontic (root canal) treatment on tooth number _______ as advised.</p></div>'
+      + '<div class="consent-section"><h4>I understand and acknowledge:</h4>'
+      + '<ol class="consent-points">'
+      + '<li>RCT involves removal of the pulp tissue from inside the tooth and sealing it to eliminate infection.</li>'
+      + '<li>The procedure typically requires 2–3 visits and may take several hours in total.</li>'
+      + '<li>Local anaesthesia will be used. I may feel pressure but not pain during the procedure.</li>'
+      + '<li>There may be discomfort, swelling, and tenderness for a few days after each visit.</li>'
+      + '<li>Rarely, instruments may fracture inside the canal, requiring additional procedures or referral.</li>'
+      + '<li>There is a small risk of perforation of the root or crown during treatment.</li>'
+      + '<li>RCT does not guarantee the tooth will remain pain-free indefinitely; re-treatment may be needed.</li>'
+      + '<li>A crown is strongly recommended after RCT to prevent tooth fracture.</li>'
+      + '<li>If the tooth is lost despite RCT, I understand alternative replacement options will be discussed.</li>'
+      + '</ol></div>';
+  }
+  else if (type === 'crown') {
+    title = 'Informed Consent — Crown / Bridge';
+    content =
+      '<div class="consent-section"><h4>Procedure:</h4><p style="font-size:.85rem">Fabrication and placement of crown/bridge on tooth/teeth _______ using _______ material.</p></div>'
+      + '<div class="consent-section"><h4>I understand and acknowledge:</h4>'
+      + '<ol class="consent-points">'
+      + '<li>Tooth preparation involves irreversible reduction of the natural tooth structure.</li>'
+      + '<li>Temporary crowns/bridges will be placed between visits; I must avoid hard/sticky foods.</li>'
+      + '<li>Final crowns are matched for shade but exact colour match cannot always be guaranteed.</li>'
+      + '<li>Sensitivity after crown placement is normal and usually subsides within a few weeks.</li>'
+      + '<li>Crowns typically last 10–15 years with proper care; longevity depends on oral hygiene and diet.</li>'
+      + '<li>In bridge work, adjacent teeth are prepared to serve as abutments, which is irreversible.</li>'
+      + '<li>If underlying decay or RCT need is found during preparation, additional charges will apply.</li>'
+      + '</ol></div>';
+  }
+  else if (type === 'implant') {
+    title = 'Informed Consent — Dental Implant';
+    content =
+      '<div class="consent-section"><h4>Procedure:</h4><p style="font-size:.85rem">Surgical placement of titanium implant(s) in the jaw bone for tooth replacement.</p></div>'
+      + '<div class="consent-section"><h4>I understand and acknowledge:</h4>'
+      + '<ol class="consent-points">'
+      + '<li>Implant treatment requires adequate bone volume; bone grafting may be needed at additional cost.</li>'
+      + '<li>I am a non-smoker or have agreed to quit smoking, as smoking significantly reduces implant success.</li>'
+      + '<li>My diabetes (if any) is well-controlled, as uncontrolled diabetes impairs healing.</li>'
+      + '<li>Osseointegration (bone healing around implant) takes 3–6 months; the crown is placed after this.</li>'
+      + '<li>Implant failure (rejection) occurs in 2–5% of cases; I understand re-implantation may be possible.</li>'
+      + '<li>Risks include infection, nerve proximity, sinus involvement (upper jaw), and bleeding.</li>'
+      + '<li>Implants require proper oral hygiene and regular follow-up; they can fail if neglected.</li>'
+      + '<li>Total treatment cost will be discussed before each phase; no hidden charges without prior discussion.</li>'
+      + '</ol></div>';
+  }
+  else if (type === 'ortho') {
+    title = 'Informed Consent — Orthodontic Treatment (Braces)';
+    content =
+      '<div class="consent-section"><h4>I understand and acknowledge:</h4>'
+      + '<ol class="consent-points">'
+      + '<li>Orthodontic treatment is a long-term process (typically 12–24 months) requiring full cooperation.</li>'
+      + '<li>Missed appointments may prolong treatment and affect results.</li>'
+      + '<li>Proper oral hygiene during braces is critical; poor hygiene can cause permanent white spots (decalcification).</li>'
+      + '<li>Some extractions may be needed as part of the orthodontic plan.</li>'
+      + '<li>Temporary discomfort and soreness after adjustments is normal.</li>'
+      + '<li>Retainers must be worn after braces as instructed; failure to do so may cause relapse.</li>'
+      + '<li>Root resorption (shortening of root tips) is a rare but recognized side effect of orthodontic treatment.</li>'
+      + '<li>Results are excellent in most cases but minor asymmetries and residual spacing may remain.</li>'
+      + '<li>Breakage of brackets requires immediate repair; repeated breakage will extend treatment time.</li>'
+      + '</ol></div>';
+  }
+  else if (type === 'anaesthesia') {
+    title = 'Consent for Local Anaesthesia Administration';
+    content =
+      '<div class="consent-section"><h4>I understand and acknowledge:</h4>'
+      + '<ol class="consent-points">'
+      + '<li>Local anaesthesia (LA) will be injected to numb the treatment area for pain-free dentistry.</li>'
+      + '<li>I have disclosed all known allergies, particularly to local anaesthetics (e.g. lignocaine, articaine).</li>'
+      + '<li>Temporary numbness of lips, tongue, and cheek for 2–4 hours post-injection is expected.</li>'
+      + '<li>I will not eat or bite on the numb area until sensation returns fully.</li>'
+      + '<li>Rare risks include haematoma (bruise), transient facial nerve effects, or allergic reaction.</li>'
+      + '<li>Patients on anticoagulants, pregnant women, or those with specific cardiac conditions must inform the doctor.</li>'
+      + '<li>Vasoconstrictors (adrenaline) are used in the LA; patients with heart conditions must confirm suitability.</li>'
+      + '</ol></div>'
+      + '<div class="consent-section"><h4>Allergy confirmation:</h4>'
+      + '<p style="font-size:.85rem">Known allergies: <strong>' + (p.Allergies||'None') + '</strong></p></div>';
+  }
+  else if (type === 'newpatient') {
+    title = 'New Patient Registration & Information Form';
+    content =
+      '<div class="consent-section"><h4>Personal Information (Pre-filled from records):</h4>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;font-size:.85rem">'
+      + '<div>Name: <strong>' + p.Name + '</strong></div>'
+      + '<div>Age: <strong>' + (p.Age||'') + '</strong></div>'
+      + '<div>Gender: <strong>' + (p.Gender||'') + '</strong></div>'
+      + '<div>Blood Group: <strong>' + (p.BloodGroup||'—') + '</strong></div>'
+      + '<div>Phone: <strong>' + (p.Phone||'') + '</strong></div>'
+      + '<div>DOB: <strong>' + (p.DOB||'—') + '</strong></div>'
+      + '<div style="grid-column:1/-1">Address: <strong>' + (p.Address||'') + '</strong></div>'
+      + '</div></div>'
+      + '<div class="consent-section"><h4>Medical History:</h4>'
+      + '<div style="font-size:.85rem"><p>' + (p.MedHistory||'No known conditions') + '</p>'
+      + '<p>Allergies: <strong style="color:var(--red)">' + (p.Allergies||'None') + '</strong></p></div></div>'
+      + '<div class="consent-section"><h4>Do you have any of the following? (Please circle)</h4>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:6px;font-size:.82rem">'
+      + ['Heart disease','Diabetes','Hypertension','Asthma','Epilepsy','Kidney disease','Liver disease','Thyroid disorder','Cancer / Chemotherapy','Pregnancy','Pacemaker','Blood disorders'].map(function(c){ return '<div>☐ ' + c + '</div>'; }).join('')
+      + '</div></div>'
+      + '<div class="consent-section"><h4>Current Medications:</h4>'
+      + '<div style="border:1.5px solid var(--border);border-radius:6px;padding:10px;min-height:50px;font-size:.85rem">__________________________________________________</div></div>'
+      + '<div class="consent-section"><h4>Dental History:</h4>'
+      + '<div style="display:grid;grid-template-columns:1fr 1fr;gap:6px;font-size:.82rem">'
+      + ['Previous dental treatment','Fear of dentist / Dental anxiety','Bad experience with anaesthesia','Bleeding after extraction','Jaw pain / clicking','Grinding teeth at night'].map(function(c){ return '<div>☐ ' + c + '</div>'; }).join('')
+      + '</div></div>'
+      + '<div class="consent-section" style="font-size:.82rem;color:var(--muted)">I certify that the above information is accurate to the best of my knowledge. I consent to examination and treatment.</div>';
+  }
+
+  var fullHTML =
+    '<div class="no-print btn-group mb-3">'
+    + '<button class="btn btn-primary" onclick="window.print()">🖨️ Print</button>'
+    + '<button class="btn" style="background:#25D366;color:#fff" onclick="whatsappConsent()">📱 WhatsApp to Patient</button>'
+    + '</div>'
+    + '<div class="consent-paper" id="consentPaperEl">'
+    + clinicHeader
+    + '<h2>' + title + '</h2>'
+    + '<div class="consent-sub">Date: ' + today + '</div>'
+    + patientBlock
+    + content
+    + sigBlock
+    + '<div style="text-align:center;font-size:.72rem;color:var(--muted);margin-top:16px">Powered by Bhayani Business Solutions · ' + (s.clinic_name||'Dental Clinic') + '</div>'
+    + '</div>';
+
+  document.getElementById('consentPreview').innerHTML = fullHTML;
+  document.getElementById('consentPreview').scrollIntoView({ behavior: 'smooth' });
+}
+
+function whatsappConsent() {
+  if (!consentPatient) return;
+  var phone = consentPatient.Phone ? consentPatient.Phone.replace(/[^0-9]/g,'') : '';
+  if (phone.length === 10) phone = '91' + phone;
+  var msg = 'Dear *' + consentPatient.Name + '*,\n\nPlease find your consent form from *' + (settings.clinic_name||'Dental Clinic') + '* ready for your upcoming procedure.\n\nKindly review and bring a signed copy on your visit date.\n\nFor any questions, contact us at ' + (settings.phone||'the clinic') + '.\n\n_' + (settings.clinic_name||'Dental Clinic') + '_';
+  window.open('https://wa.me/' + phone + '?text=' + encodeURIComponent(msg), '_blank');
+}
+
+// Hook into nav() to populate clinic selects
+var _origNav = nav;
+nav = function(page) {
+  _origNav(page);
+  if (page === 'clinic' || page === 'consent') {
+    populateClinicSelect();
+  }
+};
+</script>
